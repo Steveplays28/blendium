@@ -27,58 +27,56 @@ public class ShaderLoaderMixin {
 
 		var originalShaderSourceCode = cir.getReturnValue();
 
-		var newShaderSourceCode = insertCodeAfterCode(
-				originalShaderSourceCode, "out_FragColor", "uniform int u_Far; // Blendium: the view distance");
-		newShaderSourceCode = insertCodeInMain(originalShaderSourceCode, """
+		var modifiedShaderSourceCode = insertCodeAfterCode(
+				originalShaderSourceCode, "u_FogEnd", "uniform int u_Far; // Blendium: the view distance");
+		modifiedShaderSourceCode = insertCodeInMain(modifiedShaderSourceCode, """
 				// Blendium: blend the alpha of the blocks
 				float far = u_Far * 16.0;
 				out_FragColor.a *= 1.0 - smoothstep(0.4 * far, far, v_FragDistance);""");
 
 		BlendiumClient.LOGGER.info("Original shader source code:\n{}", originalShaderSourceCode);
-		BlendiumClient.LOGGER.info("Modified shader source code:\n{}", newShaderSourceCode);
-		cir.setReturnValue(newShaderSourceCode);
+		BlendiumClient.LOGGER.info("Modified shader source code:\n{}", modifiedShaderSourceCode);
+		cir.setReturnValue(modifiedShaderSourceCode);
 	}
 
 	@Unique
 	@SuppressWarnings("SameParameterValue")
-	private static @NotNull String insertCodeAfterCode(@NotNull String originalShaderSourceCode, String codeToFindAndPlaceUnder, String codeToInsert) {
-		if (!originalShaderSourceCode.contains(codeToFindAndPlaceUnder)) {
+	private static @NotNull String insertCodeAfterCode(@NotNull String shaderSourceCode, String codeToFindAndPlaceUnder, String codeToInsert) {
+		if (!shaderSourceCode.contains(codeToFindAndPlaceUnder)) {
 			BlendiumClient.LOGGER.error(
-					"Code {} could not be inserted into the block fragment shader, as {} does not exist in the original shader source code:\n{}",
-					codeToInsert, codeToFindAndPlaceUnder, originalShaderSourceCode
+					"Code {} could not be inserted into the block layer fragment shader, as {} does not exist in the original shader source code:\n{}",
+					codeToInsert, codeToFindAndPlaceUnder, shaderSourceCode
 			);
-			return originalShaderSourceCode;
+			return shaderSourceCode;
 		}
 
-		var codeToFindAndPlaceUnderIndex = originalShaderSourceCode.indexOf(codeToFindAndPlaceUnder);
-		var newLineIndex = originalShaderSourceCode.indexOf("\n", codeToFindAndPlaceUnderIndex);
-		// debug
-		BlendiumClient.LOGGER.warn("{}, {}", codeToFindAndPlaceUnderIndex, newLineIndex);
-		var originalShaderSourceCodeStringBuilder = new StringBuilder(originalShaderSourceCode);
+		var codeToFindAndPlaceUnderIndex = shaderSourceCode.indexOf(codeToFindAndPlaceUnder);
+		var newLineIndex = shaderSourceCode.indexOf("\n", codeToFindAndPlaceUnderIndex);
+		var shaderSourceCodeStringBuilder = new StringBuilder(shaderSourceCode.trim());
 
 		// Insert the code
-		originalShaderSourceCodeStringBuilder.insert(newLineIndex, String.format("\n%s\n", codeToInsert));
+		shaderSourceCodeStringBuilder.insert(newLineIndex, String.format("\n%s\n", codeToInsert));
 
-		return originalShaderSourceCodeStringBuilder.toString();
+		return shaderSourceCodeStringBuilder.toString();
 	}
 
 	@Unique
 	@SuppressWarnings("SameParameterValue")
-	private static @NotNull String insertCodeInMain(@NotNull String originalShaderSourceCode, String codeToInsert) {
-		if (!originalShaderSourceCode.contains("}")) {
+	private static @NotNull String insertCodeInMain(@NotNull String shaderSourceCode, String codeToInsert) {
+		if (!shaderSourceCode.contains("}")) {
 			BlendiumClient.LOGGER.error(
-					"Code {} couldn't be inserted into the block fragment shader, as the original shader source code does not appear to contain a main function:\n{}",
-					codeToInsert, originalShaderSourceCode
+					"Code {} couldn't be inserted into the block layer fragment shader, as the original shader source code does not appear to contain a main function:\n{}",
+					codeToInsert, shaderSourceCode
 			);
-			return originalShaderSourceCode;
+			return shaderSourceCode;
 		}
 
-		var mainFunctionClosingCurlyBracketIndex = originalShaderSourceCode.lastIndexOf("}");
-		var originalShaderSourceCodeStringBuilder = new StringBuilder(originalShaderSourceCode.trim());
+		var mainFunctionClosingCurlyBracketIndex = shaderSourceCode.lastIndexOf("}");
+		var shaderSourceCodeStringBuilder = new StringBuilder(shaderSourceCode.trim());
 
 		// Insert the code before the last }
-		originalShaderSourceCodeStringBuilder.insert(mainFunctionClosingCurlyBracketIndex, String.format("\n%s\n", codeToInsert));
+		shaderSourceCodeStringBuilder.insert(mainFunctionClosingCurlyBracketIndex, String.format("\n%s\n", codeToInsert));
 
-		return originalShaderSourceCodeStringBuilder.toString();
+		return shaderSourceCodeStringBuilder.toString();
 	}
 }
