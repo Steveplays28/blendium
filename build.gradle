@@ -44,10 +44,8 @@ dependencies {
     // Sodium (Modrinth Maven)
     modImplementation "maven.modrinth:sodium:${project.sodium_version}"
 
-    // Sodium Shader Support (Modrinth Maven)
-//    modImplementation include("maven.modrinth:sodium-shader-support:${project.sodium_shader_support_version}") {
-//        exclude(group: "net.fabricmc.fabric-api")
-//    }
+    // Iris Shaders (Modrinth Maven)
+    modImplementation "maven.modrinth:iris:${project.iris_shaders_version}"
 }
 
 processResources {

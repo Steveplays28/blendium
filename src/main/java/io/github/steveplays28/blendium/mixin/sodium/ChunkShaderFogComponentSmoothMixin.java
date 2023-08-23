@@ -11,16 +11,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static io.github.steveplays28.blendium.client.BlendiumClient.U_FAR_NAME;
+
 @Mixin(ChunkShaderFogComponent.Smooth.class)
 public class ChunkShaderFogComponentSmoothMixin {
-	@Unique
-	public final String uFarName = "u_Far";
 	@Unique
 	private GlUniformInt uFar;
 
 	@Inject(method = "<init>", at = @At(value = "TAIL"), remap = false)
 	public void constructorInject(@NotNull ShaderBindingContext context, CallbackInfo ci) {
-		this.uFar = context.bindUniform(uFarName, GlUniformInt::new);
+		this.uFar = context.bindUniform(U_FAR_NAME, GlUniformInt::new);
 	}
 
 	@Inject(method = "setup", at = @At(value = "TAIL"), remap = false)
