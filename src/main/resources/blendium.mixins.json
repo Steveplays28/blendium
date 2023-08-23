@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "sodium.ChunkShaderFogComponentSmoothMixin",
-    "sodium.DefaultChunkRendererMixin"
+    "sodium.ChunkShaderInterfaceMixin",
+    "sodium.DefaultChunkRendererMixin",
+    "sodium.ShaderLoaderMixin"
   ],
   "client": [
   ],

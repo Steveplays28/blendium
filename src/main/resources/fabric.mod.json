@@ -27,8 +27,7 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}",
-    "sodium": ">=0.5.2",
-    "sodiumss": ">=0.1.0"
+    "sodium": ">=0.5.2"
   },
   "suggests": {
     "distant-horizons": "*"
