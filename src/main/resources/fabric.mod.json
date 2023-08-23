@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "blendium",
+  "version": "${version}",
+  "name": "Blendium",
+  "description": "Alpha blending for Distant Horizons and Sodium!",
+  "authors": [
+    "Steveplays28",
+    "null511"
+  ],
+  "contact": {
+    "website": "https://modrinth.com/blendium",
+    "repo": "https://github.com/Steveplays28/blendium"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/blendium/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.steveplays28.blendium.client.BlendiumClient"
+    ]
+  },
+  "mixins": [
+    "blendium.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "sodium": ">=0.5.2",
+    "sodiumss": ">=0.1.0"
+  },
+  "suggests": {
+    "distant-horizons": "*"
+  }
+}
