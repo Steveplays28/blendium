@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ShaderLoader.class)
 public class ShaderLoaderMixin {
 	@Unique
-	private static final String FRAGMENT_SHADER_NAME = "block_layer_opaque_changes.fsh";
+	private static final String FRAGMENT_SHADER_NAME = "block_layer_opaque.fsh";
 
 	@Inject(method = "getShaderSource", at = @At("RETURN"), cancellable = true)
 	private static void getShaderSourceInject(@NotNull Identifier name, @NotNull CallbackInfoReturnable<String> cir) {
