@@ -45,9 +45,9 @@ dependencies {
     modImplementation "maven.modrinth:sodium:${project.sodium_version}"
 
     // Sodium Shader Support (Modrinth Maven)
-    modImplementation include("maven.modrinth:sodium-shader-support:${project.sodium_shader_support_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
+//    modImplementation include("maven.modrinth:sodium-shader-support:${project.sodium_shader_support_version}") {
+//        exclude(group: "net.fabricmc.fabric-api")
+//    }
 }
 
 processResources {
