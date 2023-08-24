@@ -19,22 +19,13 @@ public class BlendiumClient implements ClientModInitializer {
 		LOGGER.info("{} is loading!", MOD_NAME);
 	}
 
-	public static String injectFragmentShaderCode(String shaderSourceCode, boolean irisShaders) {
+	public static String injectFragmentShaderCode(String shaderSourceCode) {
 		var modifiedShaderSourceCode = insertCodeAfterCode(
 				shaderSourceCode, "uniform", "uniform int u_Far; // Blendium: the view distance");
-
 		modifiedShaderSourceCode = insertCodeInMain(modifiedShaderSourceCode, """
 				// Blendium: blend the alpha of the blocks
-				float far = u_Far * 16.0;""");
-
-		if (irisShaders) {
-			modifiedShaderSourceCode = insertCodeInMain(modifiedShaderSourceCode, """
-					float fragDistance = length(gl_FragCoord);
-					iris_FragData0.a *= smoothstep(0.4 * far, far, fragDistance);""");
-		} else {
-			modifiedShaderSourceCode = insertCodeInMain(modifiedShaderSourceCode, """
-					out_FragColor.a *= 1.0 - smoothstep(0.4 * far, far, v_FragDistance);""");
-		}
+				float far = u_Far * 16.0;
+				out_FragColor.a *= 1.0 - smoothstep(0.4 * far, far, v_FragDistance);""");
 
 		BlendiumClient.LOGGER.info("Original shader source code:\n{}", shaderSourceCode);
 		BlendiumClient.LOGGER.info("Modified shader source code:\n{}", modifiedShaderSourceCode);

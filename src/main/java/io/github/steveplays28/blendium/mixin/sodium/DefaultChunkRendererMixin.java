@@ -21,7 +21,5 @@ public class DefaultChunkRendererMixin {
 		RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA.value, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA.value,
 				GlStateManager.SrcFactor.ONE.value, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA.value
 		);
-
-		// TODO: Disable blend in TAIL
 	}
 }
