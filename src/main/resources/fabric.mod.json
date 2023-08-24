@@ -18,6 +18,9 @@
   "entrypoints": {
     "client": [
       "io.github.steveplays28.blendium.client.BlendiumClient"
+    ],
+    "modmenu": [
+      "io.github.steveplays28.blendium.client.compat.BlendiumModMenuIntegration"
     ]
   },
   "mixins": [
@@ -26,8 +29,9 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
-    "minecraft": "${minecraft_version}",
-    "sodium": ">=0.5.2"
+    "minecraft": "${supported_minecraft_version}",
+    "sodium": ">=0.5.2",
+    "cloth-config": ">=${cloth_config_version}"
   },
   "suggests": {
     "distant-horizons": "*"
