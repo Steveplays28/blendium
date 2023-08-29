@@ -36,6 +36,9 @@ repositories {
         name = "SonaType"
         url = "https://oss.sonatype.org/content/repositories/snapshots"
     }
+
+    // Distant Horizons
+    flatDir { dir 'libraries' }
 }
 
 dependencies {
@@ -65,6 +68,9 @@ dependencies {
 
     // Fabric Permissions API
     include(modImplementation("me.lucko:fabric-permissions-api:${project.fabric_permissions_api_version}"))
+
+    // Distant Horizons
+    modImplementation "blank:DistantHorizons-fabric-2.0.0-a-dev-1.20.1"
 }
 
 processResources {

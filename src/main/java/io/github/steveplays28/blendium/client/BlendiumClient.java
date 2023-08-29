@@ -1,7 +1,10 @@
 package io.github.steveplays28.blendium.client;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.seibel.distanthorizons.api.methods.events.DhApiEventRegister;
+import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiAfterDhInitEvent;
 import io.github.steveplays28.blendium.client.command.ReloadCommand;
+import io.github.steveplays28.blendium.client.compat.BlendiumAfterDhInitEventHandler;
 import io.github.steveplays28.blendium.client.config.BlendiumConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
@@ -10,6 +13,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +28,8 @@ public class BlendiumClient implements ClientModInitializer {
 	public static final List<LiteralArgumentBuilder<FabricClientCommandSource>> COMMANDS = List.of(ReloadCommand.register());
 	public static final String U_FAR_NAME = "u_Far";
 	public static final String U_VIEW_DISTANCE_FACTOR_NAME = "u_ViewDistanceFactor";
+	public static final String DISTANT_HORIZONS_MOD_ID = "distanthorizons";
+	public static final String IRIS_SHADERS_MOD_ID = "iris-shaders";
 
 	public static BlendiumConfig config;
 
@@ -33,6 +39,7 @@ public class BlendiumClient implements ClientModInitializer {
 
 		registerConfig();
 		registerCommands();
+		registerDhApiUsage();
 	}
 
 	public static void reloadConfig() {
@@ -107,5 +114,11 @@ public class BlendiumClient implements ClientModInitializer {
 				dispatcher.register(command);
 			}
 		});
+	}
+
+	private void registerDhApiUsage() {
+		if (FabricLoader.getInstance().isModLoaded(DISTANT_HORIZONS_MOD_ID) && FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID)) {
+			DhApiEventRegister.on(DhApiAfterDhInitEvent.class, new BlendiumAfterDhInitEventHandler());
+		}
 	}
 }

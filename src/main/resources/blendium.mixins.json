@@ -4,6 +4,7 @@
   "package": "io.github.steveplays28.blendium.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "iris.IrisMixin",
     "sodium.ChunkShaderFogComponentSmoothMixin",
     "sodium.DefaultChunkRendererMixin",
     "sodium.ShaderLoaderMixin"
