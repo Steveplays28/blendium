@@ -70,7 +70,8 @@ dependencies {
     include(modImplementation("me.lucko:fabric-permissions-api:${project.fabric_permissions_api_version}"))
 
     // Distant Horizons
-    modImplementation "blank:DistantHorizons-fabric-2.0.0-a-dev-1.20.1"
+    modImplementation "blank:DistantHorizons-api-2.0.0-a-dev-1.20.1"
+    modRuntimeOnly "blank:DistantHorizons-fabric-2.0.0-a-dev-1.20.1"
 }
 
 processResources {

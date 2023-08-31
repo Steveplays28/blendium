@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static io.github.steveplays28.blendium.client.BlendiumClient.injectFragmentShaderCode;
+import static io.github.steveplays28.blendium.client.BlendiumClient.injectSodiumFragmentShaderCode;
 
 @Mixin(ShaderLoader.class)
 public class ShaderLoaderMixin {
@@ -30,7 +30,7 @@ public class ShaderLoaderMixin {
 		}
 
 		var originalShaderSourceCode = cir.getReturnValue();
-		var modifiedShaderSourceCode = injectFragmentShaderCode(originalShaderSourceCode);
+		var modifiedShaderSourceCode = injectSodiumFragmentShaderCode(originalShaderSourceCode);
 
 		cir.setReturnValue(modifiedShaderSourceCode);
 	}
