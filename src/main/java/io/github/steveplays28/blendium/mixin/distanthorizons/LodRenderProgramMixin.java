@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.github.steveplays28.blendium.client.BlendiumClient.LOGGER;
 import static io.github.steveplays28.blendium.client.BlendiumClient.config;
 
 @Pseudo

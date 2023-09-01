@@ -25,43 +25,20 @@ public class IrisMixin {
 						config.shaderPackBrightnessMultipliers.get(Iris.getCurrentPackName()));
 				shouldClearDHRenderDataCache = true;
 
-				if (config.debug) {
-					LOGGER.info("Set Distant Horizons LOD brightness multiplier to {}.",
-							config.shaderPackBrightnessMultipliers.get(Iris.getCurrentPackName())
-					);
-				}
 			} else {
 				config.shaderPackBrightnessMultipliers.put(
 						Iris.getCurrentPackName(), DhApi.Delayed.configs.graphics().brightnessMultiplier().getValue());
 				saveConfig();
-
-				if (config.debug) {
-					LOGGER.info("Saved changed Distant Horizons LOD brightness multiplier ({}) to the config.",
-							DhApi.Delayed.configs.graphics().brightnessMultiplier().getValue()
-					);
-				}
 			}
 
 			if (config.shaderPackSaturationMultipliers.containsKey(Iris.getCurrentPackName())) {
 				DhApi.Delayed.configs.graphics().saturationMultiplier().setValue(
 						config.shaderPackSaturationMultipliers.get(Iris.getCurrentPackName()));
 				shouldClearDHRenderDataCache = true;
-
-				if (config.debug) {
-					LOGGER.info("Set Distant Horizons LOD saturation multiplier to {}.",
-							config.shaderPackSaturationMultipliers.get(Iris.getCurrentPackName())
-					);
-				}
 			} else {
 				config.shaderPackSaturationMultipliers.put(
 						Iris.getCurrentPackName(), DhApi.Delayed.configs.graphics().saturationMultiplier().getValue());
 				saveConfig();
-
-				if (config.debug) {
-					LOGGER.info("Saved changed Distant Horizons LOD saturation multiplier ({}) to the config.",
-							DhApi.Delayed.configs.graphics().saturationMultiplier().getValue()
-					);
-				}
 			}
 
 			if (shouldClearDHRenderDataCache) {
@@ -72,10 +49,11 @@ public class IrisMixin {
 		if (!config.shaderPackWaterReflectionColors.containsKey(Iris.getCurrentPackName())) {
 			config.shaderPackWaterReflectionColors.put(Iris.getCurrentPackName(), new Vec3d(-1f, -1f, -1f));
 			saveConfig();
+		}
 
-			if (config.debug) {
-				LOGGER.info("Saved new shaderpack water reflection color multiplier (-1.0, -1.0, -1.0) to the config.");
-			}
+		if (config.debug) {
+			// TODO: Log info about current preset using a helper method
+			LOGGER.info("Applied Blendium shaderpack preset to Distant Horizons' config.");
 		}
 	}
 }
