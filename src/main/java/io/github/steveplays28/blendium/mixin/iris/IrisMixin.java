@@ -24,6 +24,8 @@ public class IrisMixin {
 		if (FabricLoader.getInstance().isModLoaded(DISTANT_HORIZONS_MOD_ID)) {
 			var shouldClearDHRenderDataCache = false;
 
+			reloadConfig();
+
 			if (config.shaderPackBrightnessMultipliers.containsKey(
 					Iris.getCurrentPackName()) && !isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset()) {
 				DhApi.Delayed.configs.graphics().brightnessMultiplier().setValue(
@@ -53,12 +55,8 @@ public class IrisMixin {
 		}
 
 		if (!config.shaderPackWaterReflectionColors.containsKey(Iris.getCurrentPackName())) {
-			LOGGER.info("shaderPackWaterReflectionColors: {}", config.shaderPackWaterReflectionColors.toString());
-
 			config.shaderPackWaterReflectionColors.put(Iris.getCurrentPackName(), new Vector3f(-1f, -1f, -1f));
 			shouldSaveConfig = true;
-
-			LOGGER.info("shaderPackWaterReflectionColors didn't contain {}, adding default value.", Iris.getCurrentPackName());
 		}
 
 		if (shouldSaveConfig) {

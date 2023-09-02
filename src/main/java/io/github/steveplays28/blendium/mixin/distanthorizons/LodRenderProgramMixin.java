@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.github.steveplays28.blendium.client.BlendiumClient.LOGGER;
 import static io.github.steveplays28.blendium.client.BlendiumClient.config;
 
 @Pseudo
@@ -46,7 +45,6 @@ public class LodRenderProgramMixin extends ShaderProgram {
 		if (shaderPackWaterReflectionColor == null) {
 			shaderPackWaterReflectionColor = new Vector3f(-1f, -1f, -1f);
 		}
-		LOGGER.info(shaderPackWaterReflectionColor.toString());
 
 		setUniform(cameraPosUniform, new Vec3f(playerBlockPos.getX(), playerBlockPos.getY(), playerBlockPos.getZ()));
 		setUniform(
