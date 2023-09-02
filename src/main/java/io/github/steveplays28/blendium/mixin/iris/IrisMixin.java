@@ -3,7 +3,7 @@ package io.github.steveplays28.blendium.mixin.iris;
 import com.seibel.distanthorizons.api.DhApi;
 import net.coderbot.iris.Iris;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,16 +11,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
+import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset;
+import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhSaturationMultiplierEqualToBlendiumShaderPackPreset;
 
 @Pseudo
 @Mixin(Iris.class)
 public class IrisMixin {
 	@Inject(method = "loadShaderpack", at = @At(value = "TAIL"), remap = false)
 	private static void loadShaderpackInject(CallbackInfo ci) {
-		var shouldClearDHRenderDataCache = false;
+		var shouldSaveConfig = false;
 
 		if (FabricLoader.getInstance().isModLoaded(DISTANT_HORIZONS_MOD_ID)) {
-			if (config.shaderPackBrightnessMultipliers.containsKey(Iris.getCurrentPackName())) {
+			var shouldClearDHRenderDataCache = false;
+
+			if (config.shaderPackBrightnessMultipliers.containsKey(
+					Iris.getCurrentPackName()) && !isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset()) {
 				DhApi.Delayed.configs.graphics().brightnessMultiplier().setValue(
 						config.shaderPackBrightnessMultipliers.get(Iris.getCurrentPackName()));
 				shouldClearDHRenderDataCache = true;
@@ -28,17 +33,18 @@ public class IrisMixin {
 			} else {
 				config.shaderPackBrightnessMultipliers.put(
 						Iris.getCurrentPackName(), DhApi.Delayed.configs.graphics().brightnessMultiplier().getValue());
-				saveConfig();
+				shouldSaveConfig = true;
 			}
 
-			if (config.shaderPackSaturationMultipliers.containsKey(Iris.getCurrentPackName())) {
+			if (config.shaderPackSaturationMultipliers.containsKey(
+					Iris.getCurrentPackName()) && !isDhSaturationMultiplierEqualToBlendiumShaderPackPreset()) {
 				DhApi.Delayed.configs.graphics().saturationMultiplier().setValue(
 						config.shaderPackSaturationMultipliers.get(Iris.getCurrentPackName()));
 				shouldClearDHRenderDataCache = true;
 			} else {
 				config.shaderPackSaturationMultipliers.put(
 						Iris.getCurrentPackName(), DhApi.Delayed.configs.graphics().saturationMultiplier().getValue());
-				saveConfig();
+				shouldSaveConfig = true;
 			}
 
 			if (shouldClearDHRenderDataCache) {
@@ -47,7 +53,15 @@ public class IrisMixin {
 		}
 
 		if (!config.shaderPackWaterReflectionColors.containsKey(Iris.getCurrentPackName())) {
-			config.shaderPackWaterReflectionColors.put(Iris.getCurrentPackName(), new Vec3d(-1f, -1f, -1f));
+			LOGGER.info("shaderPackWaterReflectionColors: {}", config.shaderPackWaterReflectionColors.toString());
+
+			config.shaderPackWaterReflectionColors.put(Iris.getCurrentPackName(), new Vector3f(-1f, -1f, -1f));
+			shouldSaveConfig = true;
+
+			LOGGER.info("shaderPackWaterReflectionColors didn't contain {}, adding default value.", Iris.getCurrentPackName());
+		}
+
+		if (shouldSaveConfig) {
 			saveConfig();
 		}
 

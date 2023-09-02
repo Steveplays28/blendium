@@ -4,7 +4,7 @@ import io.github.steveplays28.blendium.client.BlendiumClient;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 
@@ -23,9 +23,9 @@ public class BlendiumConfig implements ConfigData {
 		put("ComplementaryReimagined_r2.3.zip", 1.0d);
 	}};
 	@ConfigEntry.Gui.Tooltip
-	public HashMap<String, Vec3d> shaderPackWaterReflectionColors = new HashMap<>() {{
-		put("(off)", new Vec3d(-1f, -1f, -1f));
-		put("ComplementaryReimagined_r2.3.zip", new Vec3d(1f, 1f, 1f));
+	public HashMap<String, Vector3f> shaderPackWaterReflectionColors = new HashMap<>() {{
+		put("(off)", new Vector3f(-1f, -1f, -1f));
+		put("ComplementaryReimagined_r2.3.zip", new Vector3f(1f, 1f, 1f));
 	}};
 	@ConfigEntry.Gui.Tooltip
 	public Boolean debug = false;

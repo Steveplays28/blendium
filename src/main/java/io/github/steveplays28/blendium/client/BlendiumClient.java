@@ -3,6 +3,7 @@ package io.github.steveplays28.blendium.client;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.seibel.distanthorizons.api.methods.events.DhApiEventRegister;
 import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiAfterDhInitEvent;
+import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiBeforeRenderEvent;
 import io.github.steveplays28.blendium.client.command.ReloadCommand;
 import io.github.steveplays28.blendium.client.compat.BlendiumAfterDhInitEventHandler;
 import io.github.steveplays28.blendium.client.config.BlendiumConfig;
@@ -30,7 +31,7 @@ public class BlendiumClient implements ClientModInitializer {
 	public static final String U_FAR_NAME = "u_Far";
 	public static final String U_VIEW_DISTANCE_FACTOR_NAME = "u_ViewDistanceFactor";
 	public static final String DISTANT_HORIZONS_MOD_ID = "distanthorizons";
-	public static final String IRIS_SHADERS_MOD_ID = "iris-shaders";
+	public static final String IRIS_SHADERS_MOD_ID = "iris";
 	public static final String DISTANT_HORIZONS_VERTEX_SHADER_NAME = "standard.vert";
 	public static final String DISTANT_HORIZONS_CURVE_SHADER_NAME = "curve.vert";
 
@@ -46,7 +47,8 @@ public class BlendiumClient implements ClientModInitializer {
 	}
 
 	public static void reloadConfig() {
-		config = AutoConfig.getConfigHolder(BlendiumConfig.class).getConfig();
+		loadConfig();
+		BlendiumConfigOnLoadEventHandler.onReload();
 	}
 
 	public static void saveConfig() {
@@ -82,12 +84,12 @@ public class BlendiumClient implements ClientModInitializer {
 						vec4 modifiedColor = color;
 												
 						if (modifiedColor.a < 1.0 && waterReflectionColor != vec3(-1.0, -1.0, -1.0)) {
-							modifiedColor = mix(color, vec4(waterReflectionColor, 1.0), clamp(vertexYPos / cameraPos.y + 10.0, 0.0, 1.0));
+							modifiedColor = mix(color, vec4(waterReflectionColor, 1.0), clamp(vertexYPos / cameraPos.y, 0.0, 1.0));
 						}""");
 		modifiedShaderSourceCode = insertCodeAfterCode(modifiedShaderSourceCode, "vertexColor *= color;", """
 				// Blendium: apply the modified color value to water (and other transparent objects like glass)
 				vertexColor *= modifiedColor;
-				if (modifiedColor.a < 1.0) {
+				if (modifiedColor.a < 1.0 && waterReflectionColor != vec3(-1.0, -1.0, -1.0)) {
 					vertexColor = modifiedColor;
 				}""");
 		modifiedShaderSourceCode = removeCode(modifiedShaderSourceCode, "vertexColor *= color;");
@@ -148,13 +150,17 @@ public class BlendiumClient implements ClientModInitializer {
 			return shaderSourceCode;
 		}
 
-		return shaderSourceCode.replaceFirst(codeToRemove, "");
+		return shaderSourceCode.replace(codeToRemove, "");
+	}
+
+	private static void loadConfig() {
+		AutoConfig.getConfigHolder(BlendiumConfig.class).load();
+		config = AutoConfig.getConfigHolder(BlendiumConfig.class).getConfig();
 	}
 
 	private void registerConfig() {
 		AutoConfig.register(BlendiumConfig.class, JanksonConfigSerializer::new);
-		AutoConfig.getConfigHolder(BlendiumConfig.class).registerLoadListener(new BlendiumConfigOnLoadEventHandler());
-		reloadConfig();
+		loadConfig();
 	}
 
 	private void registerCommands() {

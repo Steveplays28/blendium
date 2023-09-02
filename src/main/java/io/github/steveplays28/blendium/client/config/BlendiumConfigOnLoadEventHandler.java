@@ -1,20 +1,15 @@
 package io.github.steveplays28.blendium.client.config;
 
 import com.seibel.distanthorizons.api.DhApi;
-import me.shedaniel.autoconfig.ConfigHolder;
-import me.shedaniel.autoconfig.event.ConfigSerializeEvent;
 import net.coderbot.iris.Iris;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.ActionResult;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
 import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset;
 import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhSaturationMultiplierEqualToBlendiumShaderPackPreset;
 
-@SuppressWarnings("unused")
-public class BlendiumConfigOnLoadEventHandler implements ConfigSerializeEvent.Load<BlendiumConfig> {
-	@Override
-	public ActionResult onLoad(ConfigHolder<BlendiumConfig> configHolder, BlendiumConfig blendiumConfig) {
+public class BlendiumConfigOnLoadEventHandler {
+	public static void onReload() {
 		if (FabricLoader.getInstance().isModLoaded(DISTANT_HORIZONS_MOD_ID) && FabricLoader.getInstance().isModLoaded(
 				IRIS_SHADERS_MOD_ID)) {
 			var brightnessMultiplier = DhApi.Delayed.configs.graphics().brightnessMultiplier();
@@ -22,9 +17,9 @@ public class BlendiumConfigOnLoadEventHandler implements ConfigSerializeEvent.Lo
 			var currentShaderPackName = Iris.getCurrentPackName();
 			var shouldClearDHRenderDataCache = false;
 
-			if (blendiumConfig.shaderPackBrightnessMultipliers.containsKey(currentShaderPackName)) {
+			if (config.shaderPackBrightnessMultipliers.containsKey(currentShaderPackName)) {
 				if (!isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset()) {
-					brightnessMultiplier.setValue(blendiumConfig.shaderPackBrightnessMultipliers.get(currentShaderPackName));
+					brightnessMultiplier.setValue(config.shaderPackBrightnessMultipliers.get(currentShaderPackName));
 					shouldClearDHRenderDataCache = true;
 				}
 			} else {
@@ -32,9 +27,9 @@ public class BlendiumConfigOnLoadEventHandler implements ConfigSerializeEvent.Lo
 						currentShaderPackName, DhApi.Delayed.configs.graphics().brightnessMultiplier().getDefaultValue());
 			}
 
-			if (blendiumConfig.shaderPackSaturationMultipliers.containsKey(currentShaderPackName)) {
+			if (config.shaderPackSaturationMultipliers.containsKey(currentShaderPackName)) {
 				if (!isDhSaturationMultiplierEqualToBlendiumShaderPackPreset()) {
-					saturationMultiplier.setValue(blendiumConfig.shaderPackSaturationMultipliers.get(currentShaderPackName));
+					saturationMultiplier.setValue(config.shaderPackSaturationMultipliers.get(currentShaderPackName));
 					shouldClearDHRenderDataCache = true;
 				}
 			} else {
@@ -47,13 +42,11 @@ public class BlendiumConfigOnLoadEventHandler implements ConfigSerializeEvent.Lo
 
 				if (config.debug) {
 					// TODO: Log info about current preset using a helper method
-					LOGGER.info("Applied Blendium shaderpack preset to Distant Horizons' config.");
+					LOGGER.info("Applied Blendium shaderpack preset to Distant Horizons' config for {}.", currentShaderPackName);
 				}
 			} else if (config.debug) {
 				LOGGER.info("No changes to the Blendium shaderpack presets found to apply to Distant Horizons' config.");
 			}
 		}
-
-		return ActionResult.SUCCESS;
 	}
 }
