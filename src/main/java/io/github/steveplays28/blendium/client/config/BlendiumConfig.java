@@ -25,7 +25,7 @@ public class BlendiumConfig implements ConfigData {
 	@ConfigEntry.Gui.Tooltip
 	public HashMap<String, Vector3f> shaderPackWaterReflectionColors = new HashMap<>() {{
 		put("(off)", new Vector3f(-1f, -1f, -1f));
-		put("ComplementaryReimagined_r2.3.zip", new Vector3f(1f, 1f, 1f));
+		put("ComplementaryReimagined_r2.3.zip", new Vector3f(0.82f, 0.9f, 0.96f));
 	}};
 	@ConfigEntry.Gui.Tooltip
 	public Boolean debug = false;
