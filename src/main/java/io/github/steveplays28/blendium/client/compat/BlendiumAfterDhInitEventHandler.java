@@ -7,6 +7,8 @@ import net.coderbot.iris.Iris;
 import net.fabricmc.loader.api.FabricLoader;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
+import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset;
+import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhSaturationMultiplierEqualToBlendiumShaderPackPreset;
 
 // TODO: Maybe replace with a Fabric API event for world load/server join
 public class BlendiumAfterDhInitEventHandler extends DhApiAfterDhInitEvent {
@@ -21,20 +23,24 @@ public class BlendiumAfterDhInitEventHandler extends DhApiAfterDhInitEvent {
 	}
 
 	private void onBrightnessMultiplierChanged(Double brightnessMultiplier) {
-		config.shaderPackBrightnessMultipliers.put(Iris.getCurrentPackName(), brightnessMultiplier);
-		DhApi.Delayed.renderProxy.clearRenderDataCache();
+		if (!isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset()) {
+			config.shaderPackBrightnessMultipliers.put(Iris.getCurrentPackName(), brightnessMultiplier);
+			DhApi.Delayed.renderProxy.clearRenderDataCache();
 
-		if (config.debug) {
-			LOGGER.info("Saved changed Distant Horizons config to Blendium's shaderpack preset for {}.", Iris.getCurrentPackName());
+			if (config.debug) {
+				LOGGER.info("Saved changed Distant Horizons config to Blendium's shaderpack preset for {}.", Iris.getCurrentPackName());
+			}
 		}
 	}
 
 	private void onSaturationMultiplierChanged(Double saturationMultiplier) {
-		config.shaderPackSaturationMultipliers.put(Iris.getCurrentPackName(), saturationMultiplier);
-		DhApi.Delayed.renderProxy.clearRenderDataCache();
+		if (!isDhSaturationMultiplierEqualToBlendiumShaderPackPreset()) {
+			config.shaderPackSaturationMultipliers.put(Iris.getCurrentPackName(), saturationMultiplier);
+			DhApi.Delayed.renderProxy.clearRenderDataCache();
 
-		if (config.debug) {
-			LOGGER.info("Saved changed Distant Horizons config to Blendium's shaderpack preset for {}.", Iris.getCurrentPackName());
+			if (config.debug) {
+				LOGGER.info("Saved changed Distant Horizons config to Blendium's shaderpack preset for {}.", Iris.getCurrentPackName());
+			}
 		}
 	}
 }

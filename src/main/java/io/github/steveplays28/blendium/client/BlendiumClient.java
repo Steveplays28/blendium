@@ -3,7 +3,6 @@ package io.github.steveplays28.blendium.client;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.seibel.distanthorizons.api.methods.events.DhApiEventRegister;
 import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiAfterDhInitEvent;
-import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiBeforeRenderEvent;
 import io.github.steveplays28.blendium.client.command.ReloadCommand;
 import io.github.steveplays28.blendium.client.compat.BlendiumAfterDhInitEventHandler;
 import io.github.steveplays28.blendium.client.config.BlendiumConfig;

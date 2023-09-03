@@ -3,6 +3,7 @@ package io.github.steveplays28.blendium.client.config;
 import com.seibel.distanthorizons.api.DhApi;
 import net.coderbot.iris.Iris;
 import net.fabricmc.loader.api.FabricLoader;
+import org.joml.Vector3f;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
 import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset;
@@ -16,6 +17,7 @@ public class BlendiumConfigOnLoadEventHandler {
 			var saturationMultiplier = DhApi.Delayed.configs.graphics().saturationMultiplier();
 			var currentShaderPackName = Iris.getCurrentPackName();
 			var shouldClearDHRenderDataCache = false;
+			var shouldSaveConfig = false;
 
 			if (config.shaderPackBrightnessMultipliers.containsKey(currentShaderPackName)) {
 				if (!isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset()) {
@@ -25,6 +27,7 @@ public class BlendiumConfigOnLoadEventHandler {
 			} else {
 				config.shaderPackBrightnessMultipliers.put(
 						currentShaderPackName, DhApi.Delayed.configs.graphics().brightnessMultiplier().getDefaultValue());
+				shouldSaveConfig = true;
 			}
 
 			if (config.shaderPackSaturationMultipliers.containsKey(currentShaderPackName)) {
@@ -35,6 +38,16 @@ public class BlendiumConfigOnLoadEventHandler {
 			} else {
 				config.shaderPackSaturationMultipliers.put(
 						currentShaderPackName, DhApi.Delayed.configs.graphics().saturationMultiplier().getDefaultValue());
+				shouldSaveConfig = true;
+			}
+
+			if (!config.shaderPackWaterReflectionColors.containsKey(Iris.getCurrentPackName())) {
+				config.shaderPackWaterReflectionColors.put(Iris.getCurrentPackName(), new Vector3f(-1f, -1f, -1f));
+				shouldSaveConfig = true;
+			}
+
+			if (shouldSaveConfig) {
+				saveConfig();
 			}
 
 			if (shouldClearDHRenderDataCache) {

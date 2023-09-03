@@ -1,5 +1,6 @@
 package io.github.steveplays28.blendium.mixin.distanthorizons;
 
+import com.seibel.distanthorizons.api.DhApi;
 import com.seibel.distanthorizons.core.render.fog.LodFogConfig;
 import com.seibel.distanthorizons.core.render.glObject.shader.ShaderProgram;
 import com.seibel.distanthorizons.core.render.renderer.LodRenderProgram;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static io.github.steveplays28.blendium.client.BlendiumClient.LOGGER;
 import static io.github.steveplays28.blendium.client.BlendiumClient.config;
 
 @Pseudo
@@ -45,6 +47,9 @@ public class LodRenderProgramMixin extends ShaderProgram {
 		if (shaderPackWaterReflectionColor == null) {
 			shaderPackWaterReflectionColor = new Vector3f(-1f, -1f, -1f);
 		}
+
+//		LOGGER.info("blendium brightnessMultiplier: {}", config.shaderPackBrightnessMultipliers.get(Iris.getCurrentPackName()));
+//		LOGGER.info("DH brightnessMultiplier: {}", DhApi.Delayed.configs.graphics().brightnessMultiplier().getValue());
 
 		setUniform(cameraPosUniform, new Vec3f(playerBlockPos.getX(), playerBlockPos.getY(), playerBlockPos.getZ()));
 		setUniform(
