@@ -12,6 +12,7 @@
     "sodium.ShaderLoaderMixin"
   ],
   "client": [
+    "RenderLayersMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -26,6 +26,7 @@
   "mixins": [
     "blendium.mixins.json"
   ],
+  "accessWidener" : "blendium.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
