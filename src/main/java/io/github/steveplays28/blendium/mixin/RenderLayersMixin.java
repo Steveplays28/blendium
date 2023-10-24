@@ -3,6 +3,7 @@ package io.github.steveplays28.blendium.mixin;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FernBlock;
 import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.TallPlantBlock;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +19,7 @@ public class RenderLayersMixin {
 	private static void getBlockLayerInject(BlockState state, CallbackInfoReturnable<RenderLayer> cir) {
 		var block = state.getBlock();
 
-		if (block instanceof LeavesBlock || block instanceof FernBlock) {
+		if (block instanceof LeavesBlock || block instanceof FernBlock || block instanceof TallPlantBlock) {
 			cir.setReturnValue(getTranslucent());
 		}
 	}
