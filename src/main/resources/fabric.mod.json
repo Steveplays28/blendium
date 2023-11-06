@@ -23,7 +23,7 @@
   "mixins": [
     "blendium.mixins.json"
   ],
-  "accessWidener" : "blendium.accesswidener",
+  "accessWidener": "blendium.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
@@ -31,7 +31,10 @@
     "sodium": ">=0.5.2"
   },
   "suggests": {
-    "distant-horizons": "*",
-    "iris": "*"
+    "distant-horizons": [
+      ">=2.0.0",
+      "2.0.0-a-dev"
+    ],
+    "iris": ">=1.6.0"
   }
 }
