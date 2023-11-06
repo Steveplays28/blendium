@@ -1,10 +1,8 @@
 package io.github.steveplays28.blendium.client;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.seibel.distanthorizons.api.methods.events.DhApiEventRegister;
-import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiAfterDhInitEvent;
 import io.github.steveplays28.blendium.client.command.BlendiumReloadCommand;
-import io.github.steveplays28.blendium.client.compat.BlendiumAfterDhInitEventHandler;
+import io.github.steveplays28.blendium.client.compat.distanthorizons.BlendiumDhRegistry;
 import io.github.steveplays28.blendium.client.config.BlendiumConfigLoader;
 import io.github.steveplays28.blendium.client.config.BlendiumConfigOnLoadEventHandler;
 import io.github.steveplays28.blendium.client.config.user.BlendiumConfig;
@@ -44,7 +42,11 @@ public class BlendiumClient implements ClientModInitializer {
 
 		loadConfig();
 		registerCommands();
-		registerDhApiUsage();
+
+		if (FabricLoader.getInstance().isModLoaded(DISTANT_HORIZONS_MOD_ID) && FabricLoader.getInstance().isModLoaded(
+				IRIS_SHADERS_MOD_ID)) {
+			BlendiumDhRegistry.register();
+		}
 	}
 
 	public static void reloadConfig() {
@@ -165,12 +167,5 @@ public class BlendiumClient implements ClientModInitializer {
 				dispatcher.register(command);
 			}
 		});
-	}
-
-	private void registerDhApiUsage() {
-		if (FabricLoader.getInstance().isModLoaded(DISTANT_HORIZONS_MOD_ID) && FabricLoader.getInstance().isModLoaded(
-				IRIS_SHADERS_MOD_ID)) {
-			DhApiEventRegister.on(DhApiAfterDhInitEvent.class, new BlendiumAfterDhInitEventHandler());
-		}
 	}
 }

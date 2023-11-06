@@ -11,8 +11,8 @@ import java.io.IOException;
 import static io.github.steveplays28.blendium.client.BlendiumClient.DISTANT_HORIZONS_MOD_ID;
 import static io.github.steveplays28.blendium.client.BlendiumClient.IRIS_SHADERS_MOD_ID;
 
-public class BlendiumDHShaderpackPresets {
-	public static void applyDHShaderpackPreset(String shaderpackName) {
+public class BlendiumDhShaderpackPresets {
+	public static void applyDhShaderpackPreset(String shaderpackName) {
 		// Check if Iris and Distant Horizons are loaded (sanity check)
 		if (!FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID) || !FabricLoader.getInstance().isModLoaded(
 				DISTANT_HORIZONS_MOD_ID)) {

@@ -4,7 +4,7 @@ import net.coderbot.iris.Iris;
 import net.fabricmc.loader.api.FabricLoader;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
-import static io.github.steveplays28.blendium.client.compat.iris.BlendiumDHShaderpackPresets.applyDHShaderpackPreset;
+import static io.github.steveplays28.blendium.client.compat.iris.BlendiumDhShaderpackPresets.applyDhShaderpackPreset;
 
 public class BlendiumConfigOnLoadEventHandler {
 	public static void onReload() {
@@ -13,6 +13,6 @@ public class BlendiumConfigOnLoadEventHandler {
 			return;
 		}
 
-		applyDHShaderpackPreset(Iris.getCurrentPackName());
+		applyDhShaderpackPreset(Iris.getCurrentPackName());
 	}
 }
