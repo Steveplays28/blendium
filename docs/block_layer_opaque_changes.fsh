@@ -1,3 +1,5 @@
+// resources/assets/sodium/shaders/blocks/block_layer_opaque.fsh
+
 #version 330 core
 
 #import <sodium:include/fog.glsl>

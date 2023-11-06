@@ -26,11 +26,6 @@ repositories {
         url = "https://maven.terraformersmc.com"
     }
 
-    maven {
-        name = "Shedaniel"
-        url = "https://maven.shedaniel.me/"
-    }
-
     // Fabric Permissions API
     maven {
         name = "SonaType"
@@ -61,14 +56,6 @@ dependencies {
     // Iris Shaders (Modrinth Maven)
     modImplementation "maven.modrinth:iris:${project.iris_shaders_version}"
 
-    // Cloth Config (Shedaniel Maven)
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-
-    // Fabric Permissions API
-    include(modImplementation("me.lucko:fabric-permissions-api:${project.fabric_permissions_api_version}"))
-
     // Distant Horizons
     modImplementation "blank:DistantHorizons-fabric-2.0.0-a-dev-1.20.1"
 }
@@ -83,8 +70,7 @@ processResources {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
                 "loader_version": project.loader_version,
-                "supported_minecraft_version": project.supported_minecraft_version,
-                "cloth_config_version": project.cloth_config_version
+                "supported_minecraft_version": project.supported_minecraft_version
     }
 }
 

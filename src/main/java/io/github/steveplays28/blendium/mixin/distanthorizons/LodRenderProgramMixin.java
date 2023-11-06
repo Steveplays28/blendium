@@ -1,25 +1,23 @@
 package io.github.steveplays28.blendium.mixin.distanthorizons;
 
-import com.seibel.distanthorizons.api.DhApi;
 import com.seibel.distanthorizons.core.render.fog.LodFogConfig;
 import com.seibel.distanthorizons.core.render.glObject.shader.ShaderProgram;
 import com.seibel.distanthorizons.core.render.renderer.LodRenderProgram;
 import com.seibel.distanthorizons.coreapi.util.math.Mat4f;
 import com.seibel.distanthorizons.coreapi.util.math.Vec3f;
 import net.coderbot.iris.Iris;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.github.steveplays28.blendium.client.BlendiumClient.LOGGER;
+import static io.github.steveplays28.blendium.client.BlendiumClient.IRIS_SHADERS_MOD_ID;
 import static io.github.steveplays28.blendium.client.BlendiumClient.config;
 
-@Pseudo
 @Mixin(LodRenderProgram.class)
 public class LodRenderProgramMixin extends ShaderProgram {
 	@Unique
@@ -40,12 +38,20 @@ public class LodRenderProgramMixin extends ShaderProgram {
 	@Inject(method = "fillUniformData", at = @At(value = "TAIL"), remap = false)
 	public void fillUniformDataInject(Mat4f combinedMatrix, int lightmapBindPoint, int worldYOffset, int vanillaDrawDistance, CallbackInfo ci) {
 		var player = MinecraftClient.getInstance().player;
-		if (player == null) return;
-		var playerBlockPos = MinecraftClient.getInstance().player.getBlockPos();
+		if (player == null) {
+			var invalidVector = new Vec3f(-1f, -1f, -1f);
 
-		var shaderPackWaterReflectionColor = config.shaderPackWaterReflectionColors.get(Iris.getCurrentPackName());
-		if (shaderPackWaterReflectionColor == null) {
-			shaderPackWaterReflectionColor = new Vector3f(-1f, -1f, -1f);
+			setUniform(cameraPosUniform, invalidVector);
+			setUniform(waterReflectionColorUniform, invalidVector);
+			return;
+		}
+
+		var playerBlockPos = MinecraftClient.getInstance().player.getBlockPos();
+		var shaderPackWaterReflectionColor = new Vector3f(-1f, -1f, -1f);
+
+		if (FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID) && config.shaderpackWaterReflectionColors.containsKey(
+				Iris.getCurrentPackName())) {
+			shaderPackWaterReflectionColor = config.shaderpackWaterReflectionColors.get(Iris.getCurrentPackName());
 		}
 
 //		LOGGER.info("blendium brightnessMultiplier: {}", config.shaderPackBrightnessMultipliers.get(Iris.getCurrentPackName()));

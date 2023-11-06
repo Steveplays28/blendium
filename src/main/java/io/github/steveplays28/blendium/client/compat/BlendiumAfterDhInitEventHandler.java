@@ -7,40 +7,35 @@ import net.coderbot.iris.Iris;
 import net.fabricmc.loader.api.FabricLoader;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
-import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset;
-import static io.github.steveplays28.blendium.client.BlendiumShaderPackPresetHelper.isDhSaturationMultiplierEqualToBlendiumShaderPackPreset;
+import static io.github.steveplays28.blendium.client.compat.iris.BlendiumDHShaderpackPresets.applyDHShaderpackPreset;
 
-// TODO: Maybe replace with a Fabric API event for world load/server join
+// TODO: Maybe reset the LOD shaderpack presets when unloading the game, in case Iris gets disabled/removed
 public class BlendiumAfterDhInitEventHandler extends DhApiAfterDhInitEvent {
 	@Override
 	public void afterDistantHorizonsInit(DhApiEventParam<Void> input) {
 		if (FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID)) {
-			DhApi.Delayed.configs.graphics().brightnessMultiplier().addChangeListener(this::onBrightnessMultiplierChanged);
-			DhApi.Delayed.configs.graphics().saturationMultiplier().addChangeListener(this::onSaturationMultiplierChanged);
+			applyDHShaderpackPreset(Iris.getCurrentPackName());
 		}
 
-		// TODO: Find a way to read DH's config and update Blendium's config when the current shaderpack name isn't null
+		DhApi.Delayed.configs.graphics().brightnessMultiplier().addChangeListener(this::onBrightnessMultiplierChanged);
+		DhApi.Delayed.configs.graphics().saturationMultiplier().addChangeListener(this::onSaturationMultiplierChanged);
 	}
 
 	private void onBrightnessMultiplierChanged(Double brightnessMultiplier) {
-		if (!isDhBrightnessMultiplierEqualToBlendiumShaderPackPreset()) {
-			config.shaderPackBrightnessMultipliers.put(Iris.getCurrentPackName(), brightnessMultiplier);
-			DhApi.Delayed.renderProxy.clearRenderDataCache();
+		config.shaderpackBrightnessMultipliers.put(Iris.getCurrentPackName(), brightnessMultiplier);
+		saveConfig();
 
-			if (config.debug) {
-				LOGGER.info("Saved changed Distant Horizons config to Blendium's shaderpack preset for {}.", Iris.getCurrentPackName());
-			}
+		if (config.debug) {
+			LOGGER.info("Updated shaderpack preset for {}.", Iris.getCurrentPackName());
 		}
 	}
 
 	private void onSaturationMultiplierChanged(Double saturationMultiplier) {
-		if (!isDhSaturationMultiplierEqualToBlendiumShaderPackPreset()) {
-			config.shaderPackSaturationMultipliers.put(Iris.getCurrentPackName(), saturationMultiplier);
-			DhApi.Delayed.renderProxy.clearRenderDataCache();
+		config.shaderpackSaturationMultipliers.put(Iris.getCurrentPackName(), saturationMultiplier);
+		saveConfig();
 
-			if (config.debug) {
-				LOGGER.info("Saved changed Distant Horizons config to Blendium's shaderpack preset for {}.", Iris.getCurrentPackName());
-			}
+		if (config.debug) {
+			LOGGER.info("Updated shaderpack preset for {}.", Iris.getCurrentPackName());
 		}
 	}
 }

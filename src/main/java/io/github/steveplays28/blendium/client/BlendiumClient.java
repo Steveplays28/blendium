@@ -3,12 +3,11 @@ package io.github.steveplays28.blendium.client;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.seibel.distanthorizons.api.methods.events.DhApiEventRegister;
 import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiAfterDhInitEvent;
-import io.github.steveplays28.blendium.client.command.ReloadCommand;
+import io.github.steveplays28.blendium.client.command.BlendiumReloadCommand;
 import io.github.steveplays28.blendium.client.compat.BlendiumAfterDhInitEventHandler;
-import io.github.steveplays28.blendium.client.config.BlendiumConfig;
+import io.github.steveplays28.blendium.client.config.BlendiumConfigLoader;
 import io.github.steveplays28.blendium.client.config.BlendiumConfigOnLoadEventHandler;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import io.github.steveplays28.blendium.client.config.user.BlendiumConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -26,13 +26,15 @@ public class BlendiumClient implements ClientModInitializer {
 	public static final String MOD_ID = "blendium";
 	public static final String MOD_NAME = "Blendium";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final List<LiteralArgumentBuilder<FabricClientCommandSource>> COMMANDS = List.of(ReloadCommand.register());
+	public static final List<LiteralArgumentBuilder<FabricClientCommandSource>> COMMANDS = List.of(BlendiumReloadCommand.register());
 	public static final String U_FAR_NAME = "u_Far";
 	public static final String U_VIEW_DISTANCE_FACTOR_NAME = "u_ViewDistanceFactor";
 	public static final String DISTANT_HORIZONS_MOD_ID = "distanthorizons";
+	public static final String SODIUM_MOD_ID = "sodium";
 	public static final String IRIS_SHADERS_MOD_ID = "iris";
 	public static final String DISTANT_HORIZONS_VERTEX_SHADER_NAME = "standard.vert";
 	public static final String DISTANT_HORIZONS_CURVE_SHADER_NAME = "curve.vert";
+	public static final Path MOD_LOADER_CONFIG_FOLDER_PATH = FabricLoader.getInstance().getConfigDir();
 
 	public static BlendiumConfig config;
 
@@ -40,7 +42,7 @@ public class BlendiumClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		LOGGER.info("{} is loading!", MOD_NAME);
 
-		registerConfig();
+		loadConfig();
 		registerCommands();
 		registerDhApiUsage();
 	}
@@ -51,7 +53,7 @@ public class BlendiumClient implements ClientModInitializer {
 	}
 
 	public static void saveConfig() {
-		AutoConfig.getConfigHolder(BlendiumConfig.class).save();
+		BlendiumConfigLoader.save();
 	}
 
 	public static @NotNull String injectSodiumFragmentShaderCode(String shaderSourceCode) {
@@ -153,13 +155,8 @@ public class BlendiumClient implements ClientModInitializer {
 	}
 
 	private static void loadConfig() {
-		AutoConfig.getConfigHolder(BlendiumConfig.class).load();
-		config = AutoConfig.getConfigHolder(BlendiumConfig.class).getConfig();
-	}
-
-	private void registerConfig() {
-		AutoConfig.register(BlendiumConfig.class, JanksonConfigSerializer::new);
-		loadConfig();
+		BlendiumConfigLoader.load();
+		config = BlendiumConfigLoader.BlendiumConfigurations.CONFIG;
 	}
 
 	private void registerCommands() {
