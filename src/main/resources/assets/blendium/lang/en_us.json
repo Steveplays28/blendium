@@ -1,6 +1,6 @@
 {
   "blendium.config_reload_success": "Reloaded Blendium config.",
-  "text.autoconfig.blendium.title": "Blendium configuration",
+  "text.autoconfig.blendium.title": "Blendium Mod Config",
   "text.autoconfig.blendium.option.viewDistanceFactor": "View distance factor",
   "text.autoconfig.blendium.option.viewDistanceFactor.@Tooltip": "Determines how close to the camera the blending starts.",
   "text.autoconfig.blendium.option.debug": "Debug",

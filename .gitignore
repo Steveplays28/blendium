@@ -116,3 +116,6 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+# Temporarily avoid ignoring libraries (such as Distant Horizons, until it gets a Maven repo)
+!libraries/*.jar
