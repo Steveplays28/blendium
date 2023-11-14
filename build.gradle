@@ -26,12 +26,6 @@ repositories {
         url = "https://maven.terraformersmc.com"
     }
 
-    // Fabric Permissions API
-    maven {
-        name = "SonaType"
-        url = "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-
     // Distant Horizons
     flatDir { dir 'libraries' }
 }
