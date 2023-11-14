@@ -12,6 +12,8 @@ import static io.github.steveplays28.blendium.client.BlendiumClient.DISTANT_HORI
 import static io.github.steveplays28.blendium.client.BlendiumClient.IRIS_SHADERS_MOD_ID;
 
 public class BlendiumDhShaderpackPresets {
+	public static final String OFF_SHADERPACK_NAME = "(off)";
+
 	public static void applyDhShaderpackPreset(String shaderpackName) {
 		// Check if Iris and Distant Horizons are loaded (sanity check)
 		if (!FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID) || !FabricLoader.getInstance().isModLoaded(
@@ -44,5 +46,14 @@ public class BlendiumDhShaderpackPresets {
 		DhApi.Delayed.configs.graphics().brightnessMultiplier().setValue(shaderpackSaturationMultiplier);
 
 		BlendiumClient.LOGGER.info("Applied shaderpack preset for {}.", shaderpackName);
+	}
+
+	public static String getShaderpackName() {
+		// Check if Iris is loaded (sanity check)
+		if (!FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID)) {
+			return OFF_SHADERPACK_NAME;
+		}
+
+		return Iris.getCurrentPackName();
 	}
 }

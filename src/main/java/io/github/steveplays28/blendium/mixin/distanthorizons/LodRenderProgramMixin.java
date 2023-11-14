@@ -5,7 +5,7 @@ import com.seibel.distanthorizons.core.render.glObject.shader.ShaderProgram;
 import com.seibel.distanthorizons.core.render.renderer.LodRenderProgram;
 import com.seibel.distanthorizons.coreapi.util.math.Mat4f;
 import com.seibel.distanthorizons.coreapi.util.math.Vec3f;
-import net.coderbot.iris.Iris;
+import io.github.steveplays28.blendium.client.compat.iris.BlendiumDhShaderpackPresets;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import org.joml.Vector3f;
@@ -50,8 +50,8 @@ public class LodRenderProgramMixin extends ShaderProgram {
 		var shaderPackWaterReflectionColor = new Vector3f(-1f, -1f, -1f);
 
 		if (FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID) && config.shaderpackWaterReflectionColors.containsKey(
-				Iris.getCurrentPackName())) {
-			shaderPackWaterReflectionColor = config.shaderpackWaterReflectionColors.get(Iris.getCurrentPackName());
+				BlendiumDhShaderpackPresets.getShaderpackName())) {
+			shaderPackWaterReflectionColor = config.shaderpackWaterReflectionColors.get(BlendiumDhShaderpackPresets.getShaderpackName());
 		}
 
 //		LOGGER.info("blendium brightnessMultiplier: {}", config.shaderPackBrightnessMultipliers.get(Iris.getCurrentPackName()));
