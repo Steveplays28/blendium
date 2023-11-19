@@ -43,7 +43,7 @@ public class BlendiumDhShaderpackPresets {
 		// Apply DH LOD saturation from the shaderpack preset
 		var shaderpackSaturationMultiplier = BlendiumConfigLoader.BlendiumConfigurations.CONFIG.shaderpackSaturationMultipliers.getOrDefault(
 				shaderpackName, 1d);
-		DhApi.Delayed.configs.graphics().brightnessMultiplier().setValue(shaderpackSaturationMultiplier);
+		DhApi.Delayed.configs.graphics().saturationMultiplier().setValue(shaderpackSaturationMultiplier);
 
 		BlendiumClient.LOGGER.info("Applied shaderpack preset for {}.", shaderpackName);
 	}

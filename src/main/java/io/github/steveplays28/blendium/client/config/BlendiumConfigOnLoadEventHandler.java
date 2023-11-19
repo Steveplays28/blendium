@@ -1,6 +1,6 @@
 package io.github.steveplays28.blendium.client.config;
 
-import net.coderbot.iris.Iris;
+import io.github.steveplays28.blendium.client.compat.iris.BlendiumDhShaderpackPresets;
 import net.fabricmc.loader.api.FabricLoader;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
@@ -13,6 +13,6 @@ public class BlendiumConfigOnLoadEventHandler {
 			return;
 		}
 
-		applyDhShaderpackPreset(Iris.getCurrentPackName());
+		applyDhShaderpackPreset(BlendiumDhShaderpackPresets.getShaderpackName());
 	}
 }

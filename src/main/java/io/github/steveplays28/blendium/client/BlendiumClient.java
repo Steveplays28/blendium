@@ -3,6 +3,7 @@ package io.github.steveplays28.blendium.client;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.steveplays28.blendium.client.command.BlendiumReloadCommand;
 import io.github.steveplays28.blendium.client.compat.distanthorizons.BlendiumDhRegistry;
+import io.github.steveplays28.blendium.client.compat.iris.BlendiumDhShaderpackPresets;
 import io.github.steveplays28.blendium.client.config.BlendiumConfigLoader;
 import io.github.steveplays28.blendium.client.config.BlendiumConfigOnLoadEventHandler;
 import io.github.steveplays28.blendium.client.config.user.BlendiumConfig;
@@ -11,6 +12,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -18,6 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.List;
+
+import static io.github.steveplays28.blendium.client.compat.iris.BlendiumDhShaderpackPresets.applyDhShaderpackPreset;
 
 @Environment(EnvType.CLIENT)
 public class BlendiumClient implements ClientModInitializer {
@@ -47,6 +51,13 @@ public class BlendiumClient implements ClientModInitializer {
 				IRIS_SHADERS_MOD_ID)) {
 			BlendiumDhRegistry.register();
 		}
+
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+			if (FabricLoader.getInstance().isModLoaded(DISTANT_HORIZONS_MOD_ID) && FabricLoader.getInstance().isModLoaded(
+					IRIS_SHADERS_MOD_ID)) {
+				applyDhShaderpackPreset(BlendiumDhShaderpackPresets.getShaderpackName());
+			}
+		});
 	}
 
 	public static void reloadConfig() {
