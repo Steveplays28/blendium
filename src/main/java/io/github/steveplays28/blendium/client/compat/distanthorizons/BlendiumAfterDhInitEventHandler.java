@@ -16,6 +16,7 @@ public class BlendiumAfterDhInitEventHandler extends DhApiAfterDhInitEvent {
 	}
 
 	private void onBrightnessMultiplierChanged(Double brightnessMultiplier) {
+		DhApi.Delayed.configs.graphics().brightnessMultiplier().setValue(null);
 		config.shaderpackBrightnessMultipliers.put(BlendiumDhShaderpackPresets.getShaderpackName(), brightnessMultiplier);
 		saveConfig();
 
@@ -25,6 +26,7 @@ public class BlendiumAfterDhInitEventHandler extends DhApiAfterDhInitEvent {
 	}
 
 	private void onSaturationMultiplierChanged(Double saturationMultiplier) {
+		DhApi.Delayed.configs.graphics().saturationMultiplier().setValue(null);
 		config.shaderpackSaturationMultipliers.put(BlendiumDhShaderpackPresets.getShaderpackName(), saturationMultiplier);
 		saveConfig();
 
