@@ -36,7 +36,7 @@ public class LodRenderProgramMixin extends ShaderProgram {
 	}
 
 	@Inject(method = "fillUniformData", at = @At(value = "TAIL"), remap = false)
-	public void fillUniformDataInject(Mat4f combinedMatrix, int lightmapBindPoint, int worldYOffset, int vanillaDrawDistance, CallbackInfo ci) {
+	public void fillUniformDataInject(Mat4f combinedMatrix, int lightmapBindPoint, int worldYOffset, float partialTicks, CallbackInfo ci) {
 		var player = MinecraftClient.getInstance().player;
 		if (player == null) {
 			var invalidVector = new Vec3f(-1f, -1f, -1f);
@@ -54,6 +54,7 @@ public class LodRenderProgramMixin extends ShaderProgram {
 			shaderPackWaterReflectionColor = config.shaderpackWaterReflectionColors.get(BlendiumDhShaderpackPresets.getShaderpackName());
 		}
 
+		// DEBUG
 //		LOGGER.info("blendium brightnessMultiplier: {}", config.shaderPackBrightnessMultipliers.get(Iris.getCurrentPackName()));
 //		LOGGER.info("DH brightnessMultiplier: {}", DhApi.Delayed.configs.graphics().brightnessMultiplier().getValue());
 

@@ -51,7 +51,7 @@ dependencies {
     modImplementation "maven.modrinth:iris:${project.iris_shaders_version}"
 
     // Distant Horizons
-    modImplementation "blank:DistantHorizons-fabric-2.0.0-a-dev-1.20.1"
+    modImplementation "blank:DistantHorizons-2.0.2-a-dev-1.20.1"
 }
 
 processResources {
