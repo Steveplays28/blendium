@@ -9,11 +9,27 @@
     "null511"
   ],
   "contact": {
-    "website": "https://modrinth.com/blendium",
-    "repo": "https://github.com/Steveplays28/blendium"
+    "homepage": "https://modrinth.com/mod/blendium",
+    "sources": "https://github.com/Steveplays28/blendium",
+    "issues": "https://github.com/Steveplays28/blendium/issues"
   },
   "license": "LGPL-3.0",
   "icon": "assets/blendium/icon.png",
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/KbWxgGg"
+      }
+    },
+    "mc-publish": {
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "curseforge": 940986,
+      "modrinth": "RE5cje8G"
+    }
+  },
   "environment": "client",
   "entrypoints": {
     "client": [
