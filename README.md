@@ -14,7 +14,7 @@ Alpha blending for Distant Horizons and Sodium!
 ### Optional
 
 - [Distant Horizons](https://modrinth.com/mod/distanthorizons): blends nicely with the LODs from Distant Horizons
-- [Iris](https://modrinth.com/mod/iris): Blendium has shaderpack presets for using Distant Horizons with Iris shaderpacks. Currently supports Distant Horizons' LOD brightness and saturation settings, as well as a water reflection color shader modification for Distant Horizons. When Iris isn't present the options for the shaderpack `(off)` in the config file are used
+- [Iris](https://modrinth.com/mod/iris): Blendium has shaderpack presets for using Distant Horizons with Iris shaderpacks. See [Distant Horizons shader compatibility info](https://gist.github.com/Steveplays28/52db568f297ded527da56dbe6deeec0e) for shaderpacks that are compatible with Distant Horizons (and have blending), since Blendium only works with Sodium without a shaderpack enabled. Currently supports Distant Horizons' LOD brightness and saturation settings, as well as a water reflection color shader modification for Distant Horizons. When Iris isn't present the options for the shaderpack `(off)` in the config file are used
 
 ## Incompatibilities
 
