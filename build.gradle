@@ -60,6 +60,9 @@ dependencies {
 
     // Apache Commons Math
     implementation include("org.apache.commons:commons-math3:${project.apache_commons_math_version}")
+
+    // Nvidium (Modrinth Maven)
+    modImplementation "maven.modrinth:nvidium:${project.nvidium_version}"
 }
 
 processResources {

@@ -34,6 +34,7 @@ public class BlendiumClient implements ClientModInitializer {
 	public static final String DISTANT_HORIZONS_MOD_ID = "distanthorizons";
 	public static final String SODIUM_MOD_ID = "sodium";
 	public static final String IRIS_SHADERS_MOD_ID = "iris";
+	public static final String NVIDIUM_MOD_ID = "nvidium";
 	public static final String DISTANT_HORIZONS_VERTEX_SHADER_NAME = "standard.vert";
 	public static final String DISTANT_HORIZONS_CURVE_SHADER_NAME = "curve.vert";
 	public static final Path MOD_LOADER_CONFIG_FOLDER_PATH = FabricLoader.getInstance().getConfigDir();
@@ -80,9 +81,49 @@ public class BlendiumClient implements ClientModInitializer {
 				out_FragColor.a *= 1.0 - smoothstep(u_ViewDistanceFactor * far, far, v_FragDistance);""");
 
 		if (config.debug) {
-			BlendiumClient.LOGGER.info("Original shader source code:\n{}", shaderSourceCode);
-			BlendiumClient.LOGGER.info("Modified shader source code:\n{}", modifiedShaderSourceCode);
+			BlendiumClient.LOGGER.info("Original Sodium shader source code:\n{}", shaderSourceCode);
+			BlendiumClient.LOGGER.info("Modified Sodium shader source code:\n{}", modifiedShaderSourceCode);
 		}
+
+		return modifiedShaderSourceCode;
+	}
+
+	public static @NotNull String injectNvidiumMeshVertexShaderCode(String shaderSourceCode) {
+		// Insert a custom uniform into the scene data, which is merged into both the mesh vertex shader and the fragment shader
+		var modifiedShaderSourceCode = insertCodeAfterCode(shaderSourceCode, "bool isCylindricalFog;", """
+				// Blendium: the fragment distance
+				float v_FragDistance;
+				""");
+		modifiedShaderSourceCode = insertCodeAfterCode(modifiedShaderSourceCode, "tint *= tint.w;", """
+				// Blendium: calculate the fragment distance
+				if (isCylindricalFog) {
+					v_FragDistance = max(length(pos.xz), abs(pos.y));
+				} else {
+					v_FragDistance = length(pos);
+				}""");
+
+//		if (config.debug) {
+			BlendiumClient.LOGGER.info("Original Nvidium shader source code:\n{}", shaderSourceCode);
+			BlendiumClient.LOGGER.info("Modified Nvidium shader source code:\n{}", modifiedShaderSourceCode);
+//		}
+
+		return modifiedShaderSourceCode;
+	}
+
+	public static @NotNull String injectNvidiumFragmentShaderCode(String shaderSourceCode) {
+		var modifiedShaderSourceCode = insertCodeAfterCode(shaderSourceCode, "layout(location = 0) out vec4 colour;", """
+				uniform int u_Far; // Blendium: the view distance
+				uniform float u_ViewDistanceFactor; // Blendium: the view distance blend factor
+				""");
+		modifiedShaderSourceCode = insertCodeInMain(modifiedShaderSourceCode, """
+				// Blendium: blend the alpha of the blocks
+				float far = u_Far * 16.0;
+				colour.a *= 1.0 - smoothstep(u_ViewDistanceFactor * far, far, v_FragDistance);""");
+
+//		if (config.debug) {
+			BlendiumClient.LOGGER.info("Original Nvidium shader source code:\n{}", shaderSourceCode);
+			BlendiumClient.LOGGER.info("Modified Nvidium shader source code:\n{}", modifiedShaderSourceCode);
+//		}
 
 		return modifiedShaderSourceCode;
 	}
@@ -109,8 +150,8 @@ public class BlendiumClient implements ClientModInitializer {
 		modifiedShaderSourceCode = removeCode(modifiedShaderSourceCode, "vertexColor *= color;");
 
 		if (config.debug) {
-			BlendiumClient.LOGGER.info("Original shader source code:\n{}", shaderSourceCode);
-			BlendiumClient.LOGGER.info("Modified shader source code:\n{}", modifiedShaderSourceCode);
+			BlendiumClient.LOGGER.info("Original Distant Horizons shader source code:\n{}", shaderSourceCode);
+			BlendiumClient.LOGGER.info("Modified Distant Horizons shader source code:\n{}", modifiedShaderSourceCode);
 		}
 
 		return modifiedShaderSourceCode;
