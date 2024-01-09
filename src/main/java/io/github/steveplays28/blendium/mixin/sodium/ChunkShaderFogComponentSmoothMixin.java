@@ -4,6 +4,9 @@ import me.jellysquid.mods.sodium.client.gl.shader.uniform.GlUniformFloat;
 import me.jellysquid.mods.sodium.client.gl.shader.uniform.GlUniformInt;
 import me.jellysquid.mods.sodium.client.render.chunk.shader.ChunkShaderFogComponent;
 import me.jellysquid.mods.sodium.client.render.chunk.shader.ShaderBindingContext;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ChunkShaderFogComponent.Smooth.class)
 public class ChunkShaderFogComponentSmoothMixin {
 	@Unique

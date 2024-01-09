@@ -8,11 +8,14 @@ import me.jellysquid.mods.sodium.client.render.chunk.DefaultChunkRenderer;
 import me.jellysquid.mods.sodium.client.render.chunk.lists.ChunkRenderListIterable;
 import me.jellysquid.mods.sodium.client.render.chunk.terrain.TerrainRenderPass;
 import me.jellysquid.mods.sodium.client.render.viewport.CameraTransform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Environment(EnvType.CLIENT)
 @Mixin(DefaultChunkRenderer.class)
 public class DefaultChunkRendererMixin {
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/gl/shader/GlProgram;getInterface()Ljava/lang/Object;"), remap = false)

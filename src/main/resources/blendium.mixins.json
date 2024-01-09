@@ -8,9 +8,10 @@
     "distanthorizons.LodRenderProgramMixin",
     "distanthorizons.ShaderMixin",
     "iris.IrisMixin",
+    "nvidium.NvidiumShaderLoaderMixin",
     "sodium.ChunkShaderFogComponentSmoothMixin",
     "sodium.DefaultChunkRendererMixin",
-    "sodium.ShaderLoaderMixin"
+    "sodium.SodiumShaderLoaderMixin"
   ],
   "client": [
     "RenderLayersMixin"

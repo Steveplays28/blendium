@@ -52,6 +52,9 @@ dependencies {
 
     // Distant Horizons
     modImplementation "blank:DistantHorizons-2.0.2-a-dev-1.20.1"
+
+    // Nvidium (Modrinth Maven)
+    modImplementation "maven.modrinth:nvidium:${project.nvidium_version}"
 }
 
 processResources {
