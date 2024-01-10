@@ -37,7 +37,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     // ModMenu (TerraformersMC Maven)
     modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}") {
@@ -47,8 +47,13 @@ dependencies {
     // Sodium (Modrinth Maven)
     modImplementation "maven.modrinth:sodium:${project.sodium_version}"
 
+    // Indium (Modrinth Maven)
+    modRuntimeOnly "maven.modrinth:indium:${project.indium_version}"
+
     // Iris Shaders (Modrinth Maven)
     modImplementation "maven.modrinth:iris:${project.iris_shaders_version}"
+    runtimeOnly "io.github.douira:glsl-transformer:${project.glsl_transformer_version}"
+    runtimeOnly "org.anarres:jcpp:${project.jcpp_version}"
 
     // Distant Horizons
     modImplementation "blank:DistantHorizons-2.0.2-a-dev-1.20.1"
