@@ -37,7 +37,7 @@ public class BlendiumYACLConfigScreenBuilder {
 					Text.translatable("blendium.config.category.main.title.tooltip")).group(MapOption.<String, Double>createBuilder().name(
 					Text.translatable("blendium.config.shaderpackBrightnessMultipliers")).description(
 					OptionDescription.of(Text.translatable("blendium.config.shaderpackBrightnessMultipliers.tooltip"))).binding(
-					Collections.emptyMap(), () -> BlendiumClient.config.shaderpackBrightnessMultipliers,
+					BlendiumClient.config.shaderpackBrightnessMultipliers, () -> BlendiumClient.config.shaderpackBrightnessMultipliers,
 					newValue -> BlendiumClient.config.shaderpackBrightnessMultipliers = newValue
 			).initial(() -> new AbstractMap.SimpleEntry<>("(off)", 1.0)).keyController(stringDoubleMapOptionEntry -> StringControllerBuilder.create(
 					(Option<String>) (Object) stringDoubleMapOptionEntry)).valueController(DoubleFieldControllerBuilder::create).build()).build();

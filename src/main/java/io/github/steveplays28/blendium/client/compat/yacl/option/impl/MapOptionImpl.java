@@ -154,10 +154,11 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 	@Override
 	public @NotNull Map<S, T> pendingValue() {
 		// TODO: Refactor into a method
-		Map<S, T> mapEntries = new Object2ObjectArrayMap<>();
+		Map<S, T> mapEntries = new HashMap<>();
 
 		for (MapOptionEntry<S, T> entry : entries) {
-			mapEntries.entrySet().add((Map.Entry<S, T>) entry.pendingValue());
+			var mapEntry = (Map.Entry<S, T>) entry.pendingValue();
+			mapEntries.put(mapEntry.getKey(), mapEntry.getValue());
 		}
 
 		return mapEntries;
@@ -224,9 +225,8 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<MapOptionEntry<S, T>> createEntries(Map<S, T> values) {
-		return values.entrySet().stream().filter(Map.class::isInstance).map(entryFactory::create).filter(MapOptionEntry.class::isInstance).toList();
+		return values.entrySet().stream().filter(Objects::nonNull).map(entryFactory::create).toList();
 	}
 
 	void callListeners(boolean bypass) {
@@ -426,8 +426,9 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 			Validate.notNull(binding, "`binding` must not be null");
 			Validate.notNull(initialValue, "`initialValue` must not be null");
 
-			return new MapOptionImpl<>(name, description, binding, initialValue, keyControllerFunction, valueControllerFunction, ImmutableSet.copyOf(flags), collapsed,
-					available, minimumNumberOfEntries, maximumNumberOfEntries, insertEntriesAtEnd, listeners
+			return new MapOptionImpl<>(name, description, binding, initialValue, keyControllerFunction, valueControllerFunction,
+					ImmutableSet.copyOf(flags), collapsed, available, minimumNumberOfEntries, maximumNumberOfEntries, insertEntriesAtEnd,
+					listeners
 			);
 		}
 	}
