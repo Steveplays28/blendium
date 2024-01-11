@@ -15,6 +15,7 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenCentral()
 
     maven {
         name = "Modrinth"
@@ -24,6 +25,16 @@ repositories {
     maven {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com"
+    }
+
+    maven {
+        name = "Xander Maven"
+        url = "https://maven.isxander.dev/releases"
+    }
+
+    maven {
+        name = "SonaType snapshots"
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
 
     // Distant Horizons
@@ -52,14 +63,15 @@ dependencies {
 
     // Iris Shaders (Modrinth Maven)
     modImplementation "maven.modrinth:iris:${project.iris_shaders_version}"
-    runtimeOnly "io.github.douira:glsl-transformer:${project.glsl_transformer_version}"
-    runtimeOnly "org.anarres:jcpp:${project.jcpp_version}"
 
     // Distant Horizons
     modImplementation "blank:DistantHorizons-2.0.2-a-dev-1.20.1"
 
     // Apache Commons Math
     implementation include("org.apache.commons:commons-math3:${project.apache_commons_math_version}")
+
+    // YACL (Xander Maven)
+    modImplementation "dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}"
 }
 
 processResources {

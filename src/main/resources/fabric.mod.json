@@ -34,6 +34,9 @@
   "entrypoints": {
     "client": [
       "io.github.steveplays28.blendium.client.BlendiumClient"
+    ],
+    "modmenu": [
+      "io.github.steveplays28.blendium.client.compat.modmenu.BlendiumModMenuCompat"
     ]
   },
   "mixins": [
