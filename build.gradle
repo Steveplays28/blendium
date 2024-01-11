@@ -63,6 +63,8 @@ dependencies {
 
     // Iris Shaders (Modrinth Maven)
     modImplementation "maven.modrinth:iris:${project.iris_shaders_version}"
+    runtimeOnly "io.github.douira:glsl-transformer:${project.glsl_transformer_version}"
+    runtimeOnly "org.anarres:jcpp:${project.jcpp_version}"
 
     // Distant Horizons
     modImplementation "blank:DistantHorizons-2.0.2-a-dev-1.20.1"
