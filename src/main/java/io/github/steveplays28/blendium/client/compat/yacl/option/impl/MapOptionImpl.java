@@ -14,8 +14,10 @@ import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.Collectors;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 	private final Text name;
@@ -30,7 +32,7 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 	private final boolean insertEntriesAtEnd;
 	private final ImmutableSet<OptionFlag> flags;
 	@SuppressWarnings("rawtypes")
-	private final MapOptionImpl.EntryFactory entryFactory;
+	private final EntryFactory entryFactory;
 
 	private final List<BiConsumer<Option<Map<S, T>>, Map<S, T>>> listeners;
 	private final List<Runnable> refreshListeners;
@@ -52,7 +54,7 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 		this.description = description;
 		this.binding = new SafeBinding<>(binding);
 		this.initialValue = initialValue;
-		this.entryFactory = new MapOptionImpl.EntryFactory(keyControllerFunction, valueControllerFunction);
+		this.entryFactory = new EntryFactory(keyControllerFunction, valueControllerFunction);
 		this.entries = createEntries(binding().getValue());
 		this.collapsed = collapsed;
 		this.flags = flags;
@@ -224,7 +226,7 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 
 	@SuppressWarnings("unchecked")
 	private List<MapOptionEntry<S, T>> createEntries(Map<S, T> values) {
-		return values.entrySet().stream().map(entryFactory::create).collect(Collectors.toList());
+		return values.entrySet().stream().filter(Map.class::isInstance).map(entryFactory::create).filter(MapOptionEntry.class::isInstance).toList();
 	}
 
 	void callListeners(boolean bypass) {
@@ -268,7 +270,7 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 		}
 	}
 
-	public static final class BuilderImpl<S, T> implements MapOption.Builder<S, T> {
+	public static final class BuilderImpl<S, T> implements Builder<S, T> {
 		private Text name = Text.empty();
 		private OptionDescription description = OptionDescription.EMPTY;
 		private Function<MapOptionEntry<S, T>, Controller<S>> keyControllerFunction;
@@ -406,13 +408,13 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 		}
 
 		@Override
-		public MapOption.Builder<S, T> listener(@NotNull BiConsumer<Option<Map<S, T>>, Map<S, T>> listener) {
+		public Builder<S, T> listener(@NotNull BiConsumer<Option<Map<S, T>>, Map<S, T>> listener) {
 			this.listeners.add(listener);
 			return this;
 		}
 
 		@Override
-		public MapOption.Builder<S, T> listeners(@NotNull Collection<BiConsumer<Option<Map<S, T>>, Map<S, T>>> listeners) {
+		public Builder<S, T> listeners(@NotNull Collection<BiConsumer<Option<Map<S, T>>, Map<S, T>>> listeners) {
 			this.listeners.addAll(listeners);
 			return this;
 		}

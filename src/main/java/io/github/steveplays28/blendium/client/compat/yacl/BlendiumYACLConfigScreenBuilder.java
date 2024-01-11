@@ -1,6 +1,7 @@
 package io.github.steveplays28.blendium.client.compat.yacl;
 
 import dev.isxander.yacl3.api.ConfigCategory;
+import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.api.controller.DoubleFieldControllerBuilder;
@@ -11,6 +12,7 @@ import io.github.steveplays28.blendium.client.config.BlendiumConfigLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
+import java.util.AbstractMap;
 import java.util.Collections;
 
 /**
@@ -32,12 +34,13 @@ public class BlendiumYACLConfigScreenBuilder {
 	private static class MainCategory {
 		private static ConfigCategory buildMainCategory() {
 			return ConfigCategory.createBuilder().name(Text.translatable("blendium.config.category.main.title")).tooltip(
-					Text.translatable("blendium.config.category.main.title.tooltip")).group(
-					MapOption.<String, Double>createBuilder().name(Text.translatable("blendium.config.shaderpackBrightnessMultipliers")).description(
-							OptionDescription.of(Text.translatable("blendium.config.shaderpackBrightnessMultipliers.tooltip"))).binding(
-							Collections.emptyMap(), () -> BlendiumClient.config.shaderpackBrightnessMultipliers,
-							newValue -> BlendiumClient.config.shaderpackBrightnessMultipliers = newValue
-					).keyController(StringControllerBuilder::create).valueController(DoubleFieldControllerBuilder::create).build()).build();
+					Text.translatable("blendium.config.category.main.title.tooltip")).group(MapOption.<String, Double>createBuilder().name(
+					Text.translatable("blendium.config.shaderpackBrightnessMultipliers")).description(
+					OptionDescription.of(Text.translatable("blendium.config.shaderpackBrightnessMultipliers.tooltip"))).binding(
+					Collections.emptyMap(), () -> BlendiumClient.config.shaderpackBrightnessMultipliers,
+					newValue -> BlendiumClient.config.shaderpackBrightnessMultipliers = newValue
+			).initial(() -> new AbstractMap.SimpleEntry<>("(off)", 1.0)).keyController(stringDoubleMapOptionEntry -> StringControllerBuilder.create(
+					(Option<String>) (Object) stringDoubleMapOptionEntry)).valueController(DoubleFieldControllerBuilder::create).build()).build();
 		}
 
 //		private static OptionGroup buildRepairingGroup() {

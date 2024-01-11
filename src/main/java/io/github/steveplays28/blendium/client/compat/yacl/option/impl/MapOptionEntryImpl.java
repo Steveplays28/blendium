@@ -22,15 +22,14 @@ public class MapOptionEntryImpl<S, T> implements MapOptionEntry<S, T> {
 	private Map.Entry<S, T> value;
 
 	private final Binding<T> binding;
-	private final Controller<T> keyController;
-	private final Controller<T> valueController;
+	private final Controller<T> controller;
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	MapOptionEntryImpl(MapOptionImpl<S, T> group, Map.Entry<S, T> initialValue, @NotNull Function<MapOptionEntry<S, T>, Controller<S>> keyControlGetter, @NotNull Function<MapOptionEntry<S, T>, Controller<T>> valueControlGetter) {
 		this.group = group;
 		this.value = initialValue;
 		this.binding = new MapOptionEntryImpl.EntryBinding();
-		this.keyController = new MapOptionEntryImpl.EntryController<>(
+		this.controller = new MapOptionEntryImpl.EntryController<>(
 				keyControlGetter.apply(new HiddenNameMapOptionEntry<>(this)),
 				valueControlGetter.apply(new HiddenNameMapOptionEntry<>(this)), this
 		);
@@ -111,17 +110,18 @@ public class MapOptionEntryImpl<S, T> implements MapOptionEntry<S, T> {
 	                                    MapOptionEntryImpl<S, T> entry) implements Controller<T> {
 		@Override
 		public Option<T> option() {
-			return controller.option();
+			return valueController.option();
 		}
 
 		@Override
 		public Text formatValue() {
-			return controller.formatValue();
+			return keyController.formatValue();
 		}
 
 		@Override
 		public AbstractWidget provideWidget(YACLScreen screen, Dimension<Integer> widgetDimension) {
-			return new MapEntryWidget(screen, entry, controller.provideWidget(screen, widgetDimension));
+			// TODO: Update widget to include map values alongside keys
+			return new MapEntryWidget(screen, entry, keyController.provideWidget(screen, widgetDimension));
 		}
 	}
 
