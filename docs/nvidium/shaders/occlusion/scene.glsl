@@ -73,11 +73,11 @@ layout(std140, binding=0) uniform SceneData {
     float fogEnd;
     bool isCylindricalFog;
 
-    // Blendium: the fragment distance
-    float v_FragDistance;
-
     //align(2)
     uint16_t regionCount;//Number of regions in regionIndicies
     //align(1)
     uint8_t frameId;
+
+    int u_Far; // Blendium: the view distance
+    float u_ViewDistanceFactor; // Blendium: the view distance blend factor
 };

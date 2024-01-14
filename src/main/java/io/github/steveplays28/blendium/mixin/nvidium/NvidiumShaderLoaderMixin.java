@@ -17,23 +17,26 @@ import static io.github.steveplays28.blendium.client.BlendiumClient.*;
 @Mixin(ShaderLoader.class)
 public class NvidiumShaderLoaderMixin {
 	@Unique
-	private static final String FRAGMENT_SHADER_NAME = "frag.frag";
+	private static final String SCENE_DATA_SHADER_PATH = "occlusion/scene.glsl";
 	@Unique
-	private static final String MESH_VERTEX_SHADER_NAME = "mesh.glsl";
+	private static final String MESH_VERTEX_SHADER_PATH = "terrain/mesh.glsl";
+	@Unique
+	private static final String TRANSLUCENT_MESH_VERTEX_SHADER_PATH = "terrain/translucent/mesh.glsl";
+	@Unique
+	private static final String FRAGMENT_SHADER_PATH = "terrain/frag.frag";
+	@Unique
+	private static final String TRANSLUCENT_FRAGMENT_SHADER_PATH = "terrain/translucent/frag.frag";
 
 	@Inject(method = "parse", at = @At(value = "RETURN"), cancellable = true)
 	private static void parseInject(@NotNull Identifier path, @NotNull CallbackInfoReturnable<String> cir) {
-		String[] splitPath = path.toString().split("/");
-		String shaderFileName = splitPath[splitPath.length - 1];
-
-		switch (shaderFileName) {
-			case MESH_VERTEX_SHADER_NAME -> {
+		switch (path.getPath()) {
+			case MESH_VERTEX_SHADER_PATH, TRANSLUCENT_MESH_VERTEX_SHADER_PATH -> {
 				var originalShaderSourceCode = cir.getReturnValue();
 				var modifiedShaderSourceCode = injectNvidiumMeshVertexShaderCode(originalShaderSourceCode);
 
 				cir.setReturnValue(modifiedShaderSourceCode);
 			}
-			case FRAGMENT_SHADER_NAME -> {
+			case FRAGMENT_SHADER_PATH, TRANSLUCENT_FRAGMENT_SHADER_PATH -> {
 				var originalShaderSourceCode = cir.getReturnValue();
 				var modifiedShaderSourceCode = injectNvidiumFragmentShaderCode(originalShaderSourceCode);
 

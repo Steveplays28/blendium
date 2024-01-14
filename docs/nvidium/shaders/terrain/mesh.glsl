@@ -24,6 +24,8 @@ layout(location=1) out Interpolants {
     f16vec4 uv_bias_cutoff;
     f16vec3 tint;
     f16vec3 addin;
+    // Blendium: the fragment distance
+    float16_t v_FragDistance;
 } OUT[];
 
 taskNV in Task {
@@ -73,11 +75,8 @@ void emitVertex(uint vertexBaseId, uint innerId) {
     tint *= sampleLight(decodeLightUV(V));
     tint *= tint.w;
 
-    if (isCylindricalFog) {
-        v_FragDistance = max(length(pos.xz), abs(pos.y));
-    } else {
-        v_FragDistance = length(pos);
-    }
+    // Blendium: calculate the fragment distance
+    OUT[outId].v_FragDistance = (float16_t) getFragDistance(isCylindricalFog, pos+subchunkOffset.xyz);
 
     vec3 tintO;
     vec3 addiO;

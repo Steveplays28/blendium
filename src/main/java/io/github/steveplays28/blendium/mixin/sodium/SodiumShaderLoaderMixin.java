@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static io.github.steveplays28.blendium.client.BlendiumClient.injectSodiumFragmentShaderCode;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ShaderLoader.class)
+@Mixin(value = ShaderLoader.class, remap = false)
 public class SodiumShaderLoaderMixin {
 	@Unique
 	private static final String FRAGMENT_SHADER_NAME = "block_layer_opaque.fsh";

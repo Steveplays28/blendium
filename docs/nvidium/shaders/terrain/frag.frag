@@ -17,10 +17,13 @@ layout(location = 1) in Interpolants {
     f16vec4 uv_bias_cutoff;
     f16vec3 tint;
     f16vec3 addin;
+    // Blendium: the fragment distance
+    float16_t v_FragDistance;
 };
 
 
 layout(binding = 0) uniform sampler2D tex_diffuse;
+
 uniform int u_Far; // Blendium: the view distance
 uniform float u_ViewDistanceFactor; // Blendium: the view distance blend factor
 

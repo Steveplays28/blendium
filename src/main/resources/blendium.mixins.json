@@ -4,17 +4,19 @@
   "package": "io.github.steveplays28.blendium.mixin",
   "compatibilityLevel": "JAVA_17",
   "plugin": "io.github.steveplays28.blendium.mixin.BlendiumMixinPlugin",
-  "mixins": [
+  "mixins": [],
+  "client": [
+    "RenderLayersMixin",
     "distanthorizons.LodRenderProgramMixin",
     "distanthorizons.ShaderMixin",
     "iris.IrisMixin",
+    "nvidium.NvidiumPrimaryAndTemporalTerrainRasterizerMixin",
+    "nvidium.NvidiumRenderPipelineMixin",
     "nvidium.NvidiumShaderLoaderMixin",
     "sodium.ChunkShaderFogComponentSmoothMixin",
     "sodium.DefaultChunkRendererMixin",
-    "sodium.SodiumShaderLoaderMixin"
-  ],
-  "client": [
-    "RenderLayersMixin"
+    "sodium.SodiumShaderLoaderMixin",
+    "sodium.SodiumShaderParserMixin"
   ],
   "injectors": {
     "defaultRequire": 1

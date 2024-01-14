@@ -78,7 +78,8 @@ public class BlendiumClient implements ClientModInitializer {
 		modifiedShaderSourceCode = insertCodeInMain(modifiedShaderSourceCode, """
 				// Blendium: blend the alpha of the blocks
 				float far = u_Far * 16.0;
-				out_FragColor.a *= 1.0 - smoothstep(u_ViewDistanceFactor * far, far, v_FragDistance);""");
+				out_FragColor.a *= 1.0 - smoothstep(u_ViewDistanceFactor * far, far, v_FragDistance);
+				""");
 
 		if (config.debug) {
 			BlendiumClient.LOGGER.info("Original Sodium shader source code:\n{}", shaderSourceCode);
@@ -88,19 +89,29 @@ public class BlendiumClient implements ClientModInitializer {
 		return modifiedShaderSourceCode;
 	}
 
+	public static @NotNull String injectNvidiumSceneDataShaderCode(String shaderSourceCode) {
+		var modifiedShaderSourceCode = insertCodeAfterCode(shaderSourceCode, "uint8_t frameId;", """
+				int u_Far; // Blendium: the view distance
+				float u_ViewDistanceFactor; // Blendium: the view distance blend factor
+				""");
+
+//		if (config.debug) {
+		BlendiumClient.LOGGER.info("Original Nvidium shader source code:\n{}", shaderSourceCode);
+		BlendiumClient.LOGGER.info("Modified Nvidium shader source code:\n{}", modifiedShaderSourceCode);
+//		}
+
+		return modifiedShaderSourceCode;
+	}
+
 	public static @NotNull String injectNvidiumMeshVertexShaderCode(String shaderSourceCode) {
-		// Insert a custom uniform into the scene data, which is merged into both the mesh vertex shader and the fragment shader
-		var modifiedShaderSourceCode = insertCodeAfterCode(shaderSourceCode, "bool isCylindricalFog;", """
+		var modifiedShaderSourceCode = insertCodeAfterCode(shaderSourceCode, "out Interpolants {", """
 				// Blendium: the fragment distance
-				float v_FragDistance;
+				float16_t v_FragDistance;
 				""");
 		modifiedShaderSourceCode = insertCodeAfterCode(modifiedShaderSourceCode, "tint *= tint.w;", """
 				// Blendium: calculate the fragment distance
-				if (isCylindricalFog) {
-					v_FragDistance = max(length(pos.xz), abs(pos.y));
-				} else {
-					v_FragDistance = length(pos);
-				}""");
+				OUT[outId].v_FragDistance = (float16_t) getFragDistance(isCylindricalFog, pos+subchunkOffset.xyz);
+				""");
 
 //		if (config.debug) {
 			BlendiumClient.LOGGER.info("Original Nvidium shader source code:\n{}", shaderSourceCode);
@@ -111,14 +122,16 @@ public class BlendiumClient implements ClientModInitializer {
 	}
 
 	public static @NotNull String injectNvidiumFragmentShaderCode(String shaderSourceCode) {
-		var modifiedShaderSourceCode = insertCodeAfterCode(shaderSourceCode, "layout(location = 0) out vec4 colour;", """
-				uniform int u_Far; // Blendium: the view distance
-				uniform float u_ViewDistanceFactor; // Blendium: the view distance blend factor
+		var modifiedShaderSourceCode = insertCodeAfterCode(shaderSourceCode, "in Interpolants {", """
+				// Blendium: the fragment distance
+				float16_t v_FragDistance;
 				""");
 		modifiedShaderSourceCode = insertCodeInMain(modifiedShaderSourceCode, """
 				// Blendium: blend the alpha of the blocks
 				float far = u_Far * 16.0;
-				colour.a *= 1.0 - smoothstep(u_ViewDistanceFactor * far, far, v_FragDistance);""");
+				colour.a *= smoothstep(u_ViewDistanceFactor * far, far, v_FragDistance);
+				colour.a = u_ViewDistanceFactor;
+				""");
 
 //		if (config.debug) {
 			BlendiumClient.LOGGER.info("Original Nvidium shader source code:\n{}", shaderSourceCode);
