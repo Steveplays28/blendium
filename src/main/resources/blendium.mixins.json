@@ -13,7 +13,12 @@
     "sodium.ShaderLoaderMixin"
   ],
   "client": [
-    "RenderLayersMixin"
+    "RenderLayersMixin",
+    "yacl.YACLOptionListWidgetMixin",
+    "yacl.YACLOptionListWidgetMixin$YACLOptionListWidgetListGroupSeparatorEntryMixin",
+    "yacl.YACLStringControllerMixin",
+    "yacl.accessor.OptionListWidgetGroupSeparatorEntryAccessor",
+    "yacl.accessor.YACLOptionListWidgetAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

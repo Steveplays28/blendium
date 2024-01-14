@@ -8,7 +8,6 @@ import dev.isxander.yacl3.impl.SafeBinding;
 import dev.isxander.yacl3.impl.utils.YACLConstants;
 import io.github.steveplays28.blendium.client.compat.yacl.option.MapOption;
 import io.github.steveplays28.blendium.client.compat.yacl.option.MapOptionEntry;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +17,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 	private final Text name;
@@ -31,7 +31,6 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 	private final int maximumNumberOfEntries;
 	private final boolean insertEntriesAtEnd;
 	private final ImmutableSet<OptionFlag> flags;
-	@SuppressWarnings("rawtypes")
 	private final EntryFactory entryFactory;
 
 	private final List<BiConsumer<Option<Map<S, T>>, Map<S, T>>> listeners;
@@ -88,7 +87,6 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 		return minimumNumberOfEntries;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public MapOptionEntry<S, T> insertNewEntry() {
 		MapOptionEntry<S, T> newEntry = entryFactory.create(initialValue.get());
@@ -226,7 +224,7 @@ public final class MapOptionImpl<S, T> implements MapOption<S, T> {
 	}
 
 	private List<MapOptionEntry<S, T>> createEntries(Map<S, T> values) {
-		return values.entrySet().stream().filter(Objects::nonNull).map(entryFactory::create).toList();
+		return values.entrySet().stream().filter(Objects::nonNull).map(entryFactory::create).collect(Collectors.toList());
 	}
 
 	void callListeners(boolean bypass) {

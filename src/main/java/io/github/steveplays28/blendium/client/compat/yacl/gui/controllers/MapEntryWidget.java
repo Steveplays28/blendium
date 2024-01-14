@@ -82,7 +82,7 @@ public class MapEntryWidget extends AbstractWidget implements ParentElement {
 		removeButton.render(graphics, mouseX, mouseY, delta);
 		moveUpButton.render(graphics, mouseX, mouseY, delta);
 		moveDownButton.render(graphics, mouseX, mouseY, delta);
-//		entryWidget.render(graphics, mouseX, mouseY, delta);
+		entryWidget.render(graphics, mouseX, mouseY, delta);
 	}
 
 	protected void updateButtonStates() {

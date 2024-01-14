@@ -13,7 +13,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 import java.util.AbstractMap;
-import java.util.Collections;
 
 /**
  * Blendium config screen builder, uses YACL to generate the config screen.
