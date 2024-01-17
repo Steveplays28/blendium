@@ -6,6 +6,8 @@ import com.seibel.distanthorizons.core.render.renderer.LodRenderProgram;
 import com.seibel.distanthorizons.coreapi.util.math.Mat4f;
 import com.seibel.distanthorizons.coreapi.util.math.Vec3f;
 import io.github.steveplays28.blendium.client.compat.iris.BlendiumDhShaderpackPresets;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import org.joml.Vector3f;
@@ -18,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static io.github.steveplays28.blendium.client.BlendiumClient.IRIS_SHADERS_MOD_ID;
 import static io.github.steveplays28.blendium.client.BlendiumClient.config;
 
+@Environment(EnvType.CLIENT)
 @Mixin(LodRenderProgram.class)
 public class LodRenderProgramMixin extends ShaderProgram {
 	@Unique

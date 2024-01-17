@@ -1,5 +1,7 @@
 package io.github.steveplays28.blendium.mixin;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FernBlock;
 import net.minecraft.block.LeavesBlock;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.minecraft.client.render.RenderLayer.getTranslucent;
 
+@Environment(EnvType.CLIENT)
 @Mixin(RenderLayers.class)
 public class RenderLayersMixin {
 	@Inject(method = "getBlockLayer", at = @At(value = "HEAD"), cancellable = true)

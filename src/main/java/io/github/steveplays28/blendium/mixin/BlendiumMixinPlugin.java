@@ -28,7 +28,15 @@ public class BlendiumMixinPlugin implements IMixinConfigPlugin {
 			"io.github.steveplays28.blendium.mixin.sodium.ShaderLoaderMixin",
 			() -> FabricLoader.getInstance().isModLoaded(SODIUM_MOD_ID),
 			"io.github.steveplays28.blendium.mixin.iris.IrisMixin",
-			() -> FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID)
+			() -> FabricLoader.getInstance().isModLoaded(IRIS_SHADERS_MOD_ID),
+			"io.github.steveplays28.blendium.mixin.nvidium.NvidiumPrimaryAndTemporalTerrainRasterizerMixin",
+			() -> FabricLoader.getInstance().isModLoaded(NVIDIUM_MOD_ID),
+			"io.github.steveplays28.blendium.mixin.nvidium.NvidiumRenderPipelineMixin",
+			() -> FabricLoader.getInstance().isModLoaded(NVIDIUM_MOD_ID),
+			"io.github.steveplays28.blendium.mixin.nvidium.NvidiumShaderLoaderMixin",
+			() -> FabricLoader.getInstance().isModLoaded(NVIDIUM_MOD_ID),
+			"io.github.steveplays28.blendium.mixin.sodium.SodiumShaderParserMixin",
+			() -> FabricLoader.getInstance().isModLoaded(SODIUM_MOD_ID) && FabricLoader.getInstance().isModLoaded(NVIDIUM_MOD_ID)
 	);
 
 	@Override
