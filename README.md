@@ -4,6 +4,10 @@
 
 Alpha blending for Distant Horizons and Sodium!
 
+Blendium is archived and obsolete, because Iris shaderpacks are able to create a seamless transition between Minecraft chunks and DH LODs.  
+Blendium's method of blending Minecraft chunks and DH LODs causes too many rendering artifacts that are jarring to look at.  
+Voxy also has a seamless water transition without Iris shaderpacks, thanks to [MCRcortex/voxy #52](https://github.com/MCRcortex/voxy/pull/52) by [Xenthio](https://github.com/Xenthio).
+
 ## Dependencies
 
 ### Required
