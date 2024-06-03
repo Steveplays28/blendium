@@ -1,6 +1,8 @@
 package io.github.steveplays28.blendium.mixin.sodium;
 
 import me.jellysquid.mods.sodium.client.gl.shader.ShaderLoader;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,8 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.injectSodiumFragmentShaderCode;
 
-@Mixin(ShaderLoader.class)
-public class ShaderLoaderMixin {
+@Environment(EnvType.CLIENT)
+@Mixin(value = ShaderLoader.class, remap = false)
+public class SodiumShaderLoaderMixin {
 	@Unique
 	private static final String FRAGMENT_SHADER_NAME = "block_layer_opaque.fsh";
 

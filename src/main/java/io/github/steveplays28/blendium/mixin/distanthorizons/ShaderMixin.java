@@ -1,6 +1,8 @@
 package io.github.steveplays28.blendium.mixin.distanthorizons;
 
 import com.seibel.distanthorizons.core.render.glObject.shader.Shader;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static io.github.steveplays28.blendium.client.BlendiumClient.*;
 
+@Environment(EnvType.CLIENT)
 @Mixin(Shader.class)
 public class ShaderMixin {
 	@Inject(method = "loadFile", at = @At(value = "RETURN"), remap = false, cancellable = true)
