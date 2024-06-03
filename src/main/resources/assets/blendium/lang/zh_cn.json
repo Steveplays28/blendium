@@ -1,0 +1,8 @@
+{
+  "blendium.config_reload_success": "Blendium配置已重载",
+  "text.autoconfig.blendium.title": "Blendium模组配置",
+  "text.autoconfig.blendium.option.viewDistanceFactor": "视距系数",
+  "text.autoconfig.blendium.option.viewDistanceFactor.@Tooltip": "决定混合开始时距离摄像机的距离。",
+  "text.autoconfig.blendium.option.debug": "调试",
+  "text.autoconfig.blendium.option.debug.@Tooltip": "启用额外的日志信息，有助于调试。"
+}
